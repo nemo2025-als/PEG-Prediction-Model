@@ -61,7 +61,7 @@ const models = {
             const NIVWeight = data.NIV_use === "yes" ? 1 : 0;
             const logit = 0.9190 + (0.0455 * data.age) + (0.7473 * onsetWeight) + 
                           (1.1234 * NIVWeight) + (-0.2014 * data.bmi) + 
-                          (0.8990 * (100*data.pre_weight/data.post_weight));
+                          (0.8990 * 100*(1 - data.pre_weight/data.post_weight));
             return 1 / (1 + Math.exp(-logit));
         }
     }
