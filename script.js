@@ -149,35 +149,55 @@ document.getElementById('prediction-form').addEventListener('submit', function(e
     const model = models[selectedModel];
     const prediction = model.calculate(data);
     
-    // Mostra i risultati
-    showResults(prediction);
-});
+/// Lookup table per i ranges di pazienti basati sulla predizione
+const patientRanges = {
+    0.0: { min: 0, max: 10 },
+    0.1: { min: 8, max: 18 },
+    0.2: { min: 16, max: 28 },
+    0.3: { min: 24, max: 38 },
+    0.4: { min: 34, max: 48 },
+    0.5: { min: 44, max: 58 },
+    0.6: { min: 54, max: 68 },
+    0.7: { min: 64, max: 78 },
+    0.8: { min: 74, max: 88 },
+    0.9: { min: 84, max: 96 },
+    1.0: { min: 90, max: 100 }
+};
 
 // Mostra i risultati
 function showResults(prediction) {
     const resultsSection = document.getElementById('results-section');
-    const predictionResult = document.getElementById('prediction-result');
+    const riskLevelElement = document.getElementById('risk-level');
+    const riskDescription = document.getElementById('risk-description');
     const interpretation = document.getElementById('result-interpretation');
-    const riskLevel = document.getElementById('risk-level');
     
-    // Aggiorna il valore della predizione
-    predictionResult.textContent = prediction.toFixed(1);
-    
-    // Interpreta il risultato
-    let interpretationText = '';
-    let riskLevel = '';
+    // Determina il livello di rischio
+    let risk = '';
+    let descriptionText = '';
     
     if (prediction < 0.5) {
-        riskLevel = 'Low';
-        interpretationText = 'The risk of needing a PEG in the next 6 months is low. Continue standard monitoring.';
+        risk = 'Low';
+        descriptionText = 'The risk of needing a PEG in the next 6 months is low. Continue standard monitoring.';
     } else {
-        riskLevel = 'High';
-        interpretationText = 'The risk of needing a PEG in the next 6 months is high. A specialist assessment is recommended.';
+        risk = 'High';
+        descriptionText = 'The risk of needing a PEG in the next 6 months is high. A specialist assessment is recommended.';
     }
     
+    // Aggiorna il livello di rischio
+    riskLevelElement.textContent = `Risk: ${risk}`;
+    riskLevelElement.style.color = risk === 'High' ? '#e74c3c' : '#27ae60';
+    
+    // Aggiorna la descrizione del rischio
+    riskDescription.textContent = descriptionText;
+    
+    // Calcola il range di pazienti per la coorte
+    const roundedPrediction = Math.round(prediction * 10) / 10;
+    const range = patientRanges[roundedPrediction] || patientRanges[0.5];
+    
+    // Aggiorna l'interpretazione della coorte
     interpretation.innerHTML = `
-        <strong>Risk Level: ${riskLevel}</strong><br>
-        ${interpretationText}
+        Considering a cohort of 100 patients with similar disease conditions, 
+        <strong>${range.min} - ${range.max}</strong> patients will have PEG placement within 6 months.
     `;
     
     // Mostra la sezione dei risultati
@@ -186,6 +206,7 @@ function showResults(prediction) {
     // Scrolla ai risultati
     resultsSection.scrollIntoView({ behavior: 'smooth' });
 }
+
 
 // Reset del calcolatore
 function resetCalculator() {
