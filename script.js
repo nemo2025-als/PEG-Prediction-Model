@@ -149,19 +149,19 @@ document.getElementById('prediction-form').addEventListener('submit', function(e
     const model = models[selectedModel];
     const prediction = model.calculate(data);
     
-/// Lookup table per i ranges di pazienti basati sulla predizione
-const patientRanges = {
-    0.0: { min: 0, max: 10 },
-    0.1: { min: 8, max: 18 },
-    0.2: { min: 16, max: 28 },
-    0.3: { min: 24, max: 38 },
-    0.4: { min: 34, max: 48 },
-    0.5: { min: 44, max: 58 },
-    0.6: { min: 54, max: 68 },
-    0.7: { min: 64, max: 78 },
-    0.8: { min: 74, max: 88 },
-    0.9: { min: 84, max: 96 },
-    1.0: { min: 90, max: 100 }
+// Valori predittivi per ogni decile - SOSTITUISCI CON I TUOI VALORI REALI
+const predictiveValues = {
+    0.0: 5,
+    0.1: 8,
+    0.2: 15,
+    0.3: 20,
+    0.4: 45,
+    0.5: 55,
+    0.6: 72,
+    0.7: 80,
+    0.8: 85,
+    0.9: 92,
+    1.0: 95
 };
 
 // Mostra i risultati
@@ -190,15 +190,25 @@ function showResults(prediction) {
     // Aggiorna la descrizione del rischio
     riskDescription.textContent = descriptionText;
     
-    // Calcola il range di pazienti per la coorte
-    const roundedPrediction = Math.round(prediction * 10) / 10;
-    const range = patientRanges[roundedPrediction] || patientRanges[0.5];
+    // Calcola i valori della coorte
+    const lowerDecile = Math.floor(prediction * 10) / 10;
+    const upperDecile = Math.ceil(prediction * 10) / 10;
+    
+    let cohortText = '';
+    
+    if (lowerDecile === upperDecile) {
+        // La predizione cade esattamente su un decile
+        const patients = predictiveValues[lowerDecile];
+        cohortText = `Considering a cohort of 100 patients with similar disease conditions, <strong>${patients}</strong> patients will have PEG placement within 6 months.`;
+    } else {
+        // La predizione cade tra due decili
+        const lowerPatients = predictiveValues[lowerDecile];
+        const upperPatients = predictiveValues[upperDecile];
+        cohortText = `Considering a cohort of 100 patients with similar disease conditions, <strong>${lowerPatients} - ${upperPatients}</strong> patients will have PEG placement within 6 months.`;
+    }
     
     // Aggiorna l'interpretazione della coorte
-    interpretation.innerHTML = `
-        Considering a cohort of 100 patients with similar disease conditions, 
-        <strong>${range.min} - ${range.max}</strong> patients will have PEG placement within 6 months.
-    `;
+    interpretation.innerHTML = cohortText;
     
     // Mostra la sezione dei risultati
     resultsSection.classList.remove('hidden');
