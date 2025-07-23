@@ -1,11 +1,21 @@
 // Configurazione dei modelli
 const models = {
     1: {
-        name: "Modello Base",
+        name: "Anamnestic Prediction Model",
         fields: [
-            { id: "age", label: "Età", type: "number", min: 18, max: 100 },
-            { id: "alsfrs_total", label: "ALSFRS-R Totale", type: "number", min: 0, max: 48 },
-            { id: "bulbar_score", label: "Score Bulbare", type: "number", min: 0, max: 12 }
+            { id: "age", label: "Age at Evaluation", type: "number", min: 18, max: 100 },
+            { id: "onset_site", label: "Site of Onset", type: type: "select", 
+              options: [
+                { value: "bulbar", label: "Bulbar" },
+                { value: "spinal", label: "Spinal" }
+              ]
+            },
+            { id: "NIV_use", label: "Use of NIV at Evaluation", type: "radio",
+              options: [
+                { label: "Yes", value: "yes" },
+                { label: "No", value: "no" }
+              ]
+            }
         ],
         // Esempio di formula - sostituisci con la tua equazione reale
         calculate: (data) => {
@@ -14,7 +24,7 @@ const models = {
         }
     },
     2: {
-        name: "Modello Avanzato",
+        name: "Anamnestic and Functional Prediction Model",
         fields: [
             { id: "age", label: "Età", type: "number", min: 18, max: 100 },
             { id: "alsfrs_total", label: "ALSFRS-R Totale", type: "number", min: 0, max: 48 },
@@ -30,7 +40,7 @@ const models = {
         }
     },
     3: {
-        name: "Modello Completo",
+        name: "Anamnestic and Nutritional Prediction Model",
         fields: [
             { id: "age", label: "Età", type: "number", min: 18, max: 100 },
             { id: "alsfrs_total", label: "ALSFRS-R Totale", type: "number", min: 0, max: 48 },
