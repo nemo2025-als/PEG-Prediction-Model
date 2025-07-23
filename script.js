@@ -52,9 +52,9 @@ const models = {
                 { value: "yes", label: "Yes" },
                 { value: "no", label: "No" }
               ]
-            }
+            },
             { id: "bmi", label: "BMI at Evaluation", type: "number", min: 10, max: 50, step: 0.1 },
-            { id: "pre_weight", label: "Premorbid Weight", type: "number", min: 0, max: 150 }
+            { id: "pre_weight", label: "Premorbid Weight", type: "number", min: 0, max: 150 },
             { id: "post_weight", label: "Weight at Evaluation", type: "number", min: 0, max: 150 }
         ],
         // Sostituisci con la tua equazione reale
