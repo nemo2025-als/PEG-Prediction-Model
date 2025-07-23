@@ -4,7 +4,7 @@ const models = {
         name: "Anamnestic Prediction Model",
         fields: [
             { id: "age", label: "Age at Evaluation", type: "number", min: 18, max: 100 },
-            { id: "onset_site", label: "Site of Onset", type: type: "select", 
+            { id: "onset_site", label: "Site of Onset", type: "select", 
               options: [
                 { value: "bulbar", label: "Bulbar" },
                 { value: "spinal", label: "Spinal" }
