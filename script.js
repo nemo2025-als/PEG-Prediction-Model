@@ -158,6 +158,7 @@ function showResults(prediction) {
     const resultsSection = document.getElementById('results-section');
     const predictionResult = document.getElementById('prediction-result');
     const interpretation = document.getElementById('result-interpretation');
+    const riskLevel = document.getElementById('risk-level');
     
     // Aggiorna il valore della predizione
     predictionResult.textContent = prediction.toFixed(1);
