@@ -21,8 +21,8 @@ const models = {
         calculate: (data) => {
             const onsetWeight = data.onset_site === "bulbar" ? 1 : 0;
             const NIVWeight = data.NIV_use === "yes" ? 1 : 0;
-            const logit = (0.0408 * data.age) + (0.9503 * onsetWeight) + (1.0346 * NIVWeight);
-            return 100 / (1 + Math.exp(-logit));
+            const logit = -2.9255 + (0.0408 * data.age) + (0.9503 * onsetWeight) + (1.0346 * NIVWeight);
+            return 1 / (1 + Math.exp(-logit));
         }
     },
     2: {
@@ -34,8 +34,8 @@ const models = {
         ],
         // Sostituisci con la tua equazione reale
         calculate: (data) => {
-            const logit = -6.5 + (0.04 * data.age) - (0.15 * data.bulbar_score) - (0.02 * data.fvc);
-            return 100 / (1 + Math.exp(-logit));
+            const logit = 3.3238 + (0.0730 * data.age) + (-0.6943 * data.bulbar_score) + (-0.0317 * data.fvc);
+            return 1 / (1 + Math.exp(-logit));
         }
     },
     3: {
@@ -60,11 +60,12 @@ const models = {
         ],
         // Sostituisci con la tua equazione reale
         calculate: (data) => {
-            const onsetWeight = data.onset_site === "bulbar" ? 1.5 : 0;
-            const logit = -7.2 + (0.03 * data.age) - (0.18 * onsetWeight) + 
-                          (0.4 * onsetWeight) - (0.025 * data.bmi) + 
-                          (0.12 * data.pre_weight) - (0.01 * data.post_weight);
-            return 100 / (1 + Math.exp(-logit));
+            const onsetWeight = data.onset_site === "bulbar" ? 1 : 0;
+            const NIVWeight = data.NIV_use === "yes" ? 1 : 0;
+            const logit = 0.9190 + (0.0455 * data.age) + (0.7473 * onsetWeight) + 
+                          (1.1234 * NIVWeight) + (-0.2014 * data.bmi) + 
+                          (0.8990 * (100*data.pre_weight/data.post_weight));
+            return 1 / (1 + Math.exp(-logit));
         }
     }
 };
@@ -165,19 +166,16 @@ function showResults(prediction) {
     let interpretationText = '';
     let riskLevel = '';
     
-    if (prediction < 30) {
-        riskLevel = 'Basso';
-        interpretationText = 'Il rischio di necessità di PEG nei prossimi 6 mesi è basso. Continuare il monitoraggio standard.';
-    } else if (prediction < 60) {
-        riskLevel = 'Moderato';
-        interpretationText = 'Il rischio di necessità di PEG è moderato. Si consiglia un monitoraggio più frequente della funzione deglutitoria.';
+    if (prediction < 0.5) {
+        riskLevel = 'Low';
+        interpretationText = 'The risk of needing a PEG in the next 6 months is low. Continue standard monitoring.';
     } else {
-        riskLevel = 'Alto';
-        interpretationText = 'Il rischio di necessità di PEG è elevato. Si consiglia una valutazione specialistica urgente per discutere le opzioni terapeutiche.';
+        riskLevel = 'High';
+        interpretationText = 'The risk of needing a PEG in the next 6 months is high. A specialist assessment is recommended.';
     }
     
     interpretation.innerHTML = `
-        <strong>Livello di Rischio: ${riskLevel}</strong><br>
+        <strong>Risk Level: ${riskLevel}</strong><br>
         ${interpretationText}
     `;
     
