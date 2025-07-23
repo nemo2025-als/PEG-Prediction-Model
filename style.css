@@ -260,3 +260,30 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* Risk Level Styling */
+#risk-level {
+    font-size: 3em;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 20px;
+}
+
+#risk-description {
+    font-size: 1.3em;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.result-interpretation {
+    background: rgba(255,255,255,0.2);
+    padding: 25px;
+    border-radius: 10px;
+    font-size: 1.15em;
+    line-height: 1.6;
+}
+
+.result-interpretation strong {
+    color: #fff;
+    font-size: 1.2em;
+}
