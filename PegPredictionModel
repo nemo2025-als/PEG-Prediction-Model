@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolatore PEG-SLA | Centro NEMO</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header con Logo -->
+        <header class="header">
+            <div class="logo-container">
+                <img src="logo-nemo.png" alt="Centro NEMO" class="logo">
+            </div>
+            <h1 class="main-title">Calcolatore Predittivo PEG-SLA</h1>
+            <p class="subtitle">Predizione del posizionamento PEG a 6 mesi</p>
+        </header>
+
+        <!-- Selezione Modello -->
+        <section class="model-selection">
+            <h2>Seleziona il Modello Predittivo</h2>
+            <div class="model-cards">
+                <div class="model-card" data-model="1">
+                    <h3>Modello 1</h3>
+                    <p>Modello Base</p>
+                    <button class="select-btn" onclick="selectModel(1)">Seleziona</button>
+                </div>
+                <div class="model-card" data-model="2">
+                    <h3>Modello 2</h3>
+                    <p>Modello Avanzato</p>
+                    <button class="select-btn" onclick="selectModel(2)">Seleziona</button>
+                </div>
+                <div class="model-card" data-model="3">
+                    <h3>Modello 3</h3>
+                    <p>Modello Completo</p>
+                    <button class="select-btn" onclick="selectModel(3)">Seleziona</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Form Dinamico -->
+        <section id="form-section" class="form-section hidden">
+            <h2 id="model-title">Inserisci i Dati del Paziente</h2>
+            <form id="prediction-form">
+                <div id="form-fields" class="form-fields">
+                    <!-- I campi verranno generati dinamicamente -->
+                </div>
+                <button type="submit" class="calculate-btn">Calcola Predizione</button>
+            </form>
+        </section>
+
+        <!-- Risultati -->
+        <section id="results-section" class="results-section hidden">
+            <h2>Risultato della Predizione</h2>
+            <div class="result-card">
+                <div class="result-value">
+                    <span id="prediction-result">--</span>%
+                </div>
+                <p class="result-description">
+                    Probabilità di necessità di PEG a 6 mesi
+                </p>
+                <div class="result-interpretation" id="result-interpretation">
+                    <!-- Interpretazione del risultato -->
+                </div>
+            </div>
+            <button class="reset-btn" onclick="resetCalculator()">Nuovo Calcolo</button>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
