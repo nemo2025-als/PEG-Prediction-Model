@@ -28,7 +28,7 @@ const models = {
         fields: [
             { id: "age", label: "Age at Evaluation", type: "number", min: 18, max: 100 },
             { id: "bulbar_score", label: "Bulbar Subscore", type: "number", min: 0, max: 12 },
-            { id: "fvc", label: "FVC%", type: "number", min: 0, max: 150, step: 0.1 },
+            { id: "fvc", label: "FVC%", type: "number", min: 0, max: 150, step: 0.1 }
         ],
         // Sostituisci con la tua equazione reale
         calculate: (data) => {
