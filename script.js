@@ -108,6 +108,13 @@ function showForm(modelId) {
     // Aggiorna titolo
     modelTitle.textContent = `${model.name} - Insert Patient Data`;
     
+    // Aggiungi o rimuovi la classe per il modello 3
+    if (modelId === 3) {
+        formFields.classList.add('three-columns');
+    } else {
+        formFields.classList.remove('three-columns');
+    }
+    
     // Genera i campi del form
     formFields.innerHTML = '';
     model.fields.forEach(field => {
