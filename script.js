@@ -17,7 +17,6 @@ const models = {
               ]
             }
         ],
-        // Esempio di formula - sostituisci con la tua equazione reale
         calculate: (data) => {
             const onsetWeight = data.onset_site === "bulbar" ? 1 : 0;
             const NIVWeight = data.NIV_use === "yes" ? 1 : 0;
@@ -32,7 +31,6 @@ const models = {
             { id: "bulbar_score", label: "Bulbar Subscore", type: "number", min: 0, max: 12 },
             { id: "fvc", label: "FVC%", type: "number", min: 0, max: 150, step: 0.1 }
         ],
-        // Sostituisci con la tua equazione reale
         calculate: (data) => {
             const logit = 3.3238 + (0.0730 * data.age) + (-0.6943 * data.bulbar_score) + (-0.0317 * data.fvc);
             return 1 / (1 + Math.exp(-logit));
@@ -58,7 +56,6 @@ const models = {
             { id: "pre_weight", label: "Premorbid Weight", type: "number", min: 0, max: 150 },
             { id: "post_weight", label: "Weight at Evaluation", type: "number", min: 0, max: 150 }
         ],
-        // Sostituisci con la tua equazione reale
         calculate: (data) => {
             const onsetWeight = data.onset_site === "bulbar" ? 1 : 0;
             const NIVWeight = data.NIV_use === "yes" ? 1 : 0;
@@ -68,6 +65,21 @@ const models = {
             return 1 / (1 + Math.exp(-logit));
         }
     }
+};
+
+// Valori predittivi per ogni decile - SOSTITUISCI CON I TUOI VALORI REALI
+const predictiveValues = {
+    0.0: 5,
+    0.1: 8,
+    0.2: 15,
+    0.3: 20,
+    0.4: 45,
+    0.5: 55,
+    0.6: 72,
+    0.7: 80,
+    0.8: 85,
+    0.9: 92,
+    1.0: 95
 };
 
 let selectedModel = null;
@@ -149,20 +161,9 @@ document.getElementById('prediction-form').addEventListener('submit', function(e
     const model = models[selectedModel];
     const prediction = model.calculate(data);
     
-// Valori predittivi per ogni decile - SOSTITUISCI CON I TUOI VALORI REALI
-const predictiveValues = {
-    0.0: 5,
-    0.1: 8,
-    0.2: 15,
-    0.3: 20,
-    0.4: 45,
-    0.5: 55,
-    0.6: 72,
-    0.7: 80,
-    0.8: 85,
-    0.9: 92,
-    1.0: 95
-};
+    // Mostra i risultati
+    showResults(prediction);
+});
 
 // Mostra i risultati
 function showResults(prediction) {
@@ -216,7 +217,6 @@ function showResults(prediction) {
     // Scrolla ai risultati
     resultsSection.scrollIntoView({ behavior: 'smooth' });
 }
-
 
 // Reset del calcolatore
 function resetCalculator() {
