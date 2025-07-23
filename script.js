@@ -19,7 +19,7 @@ const models = {
         ],
         // Esempio di formula - sostituisci con la tua equazione reale
         calculate: (data) => {
-            const logit = -5.2 + (0.05 * data.age) - (0.12 * data.alsfrs_total) + (0.3 * data.bulbar_score);
+            const logit = -5.2 + (0.05 * data.age) - (0.12 * onsetWeight) + (0.3 * onsetWeight);
             return 100 / (1 + Math.exp(-logit));
         }
     },
@@ -32,8 +32,7 @@ const models = {
         ],
         // Sostituisci con la tua equazione reale
         calculate: (data) => {
-            const logit = -6.5 + (0.04 * data.age) - (0.15 * data.alsfrs_total) + 
-                          (0.35 * data.bulbar_score) - (0.02 * data.fvc) + (0.1 * data.bmi);
+            const logit = -6.5 + (0.04 * data.age) - (0.15 * data.bulbar_score) - (0.02 * data.fvc);
             return 100 / (1 + Math.exp(-logit));
         }
     },
@@ -60,9 +59,9 @@ const models = {
         // Sostituisci con la tua equazione reale
         calculate: (data) => {
             const onsetWeight = data.onset_site === "bulbar" ? 1.5 : 0;
-            const logit = -7.2 + (0.03 * data.age) - (0.18 * data.alsfrs_total) + 
-                          (0.4 * data.bulbar_score) - (0.025 * data.fvc) + 
-                          (0.12 * data.bmi) + onsetWeight - (0.01 * data.disease_duration);
+            const logit = -7.2 + (0.03 * data.age) - (0.18 * onsetWeight) + 
+                          (0.4 * onsetWeight) - (0.025 * data.bmi) + 
+                          (0.12 * data.pre_weight) - (0.01 * data.post_weight);
             return 100 / (1 + Math.exp(-logit));
         }
     }
