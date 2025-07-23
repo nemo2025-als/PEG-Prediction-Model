@@ -3,57 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calcolatore PEG-SLA | Centro NEMO</title>
+    <title>ALS PEG Prediction Model | NEMO Clinical Centre</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <!-- Header con Logo -->
+        <!-- Header with Logo -->
         <header class="header">
             <div class="logo-container">
                 <img src="logo-nemo.png" alt="Centro NEMO" class="logo">
             </div>
-            <h1 class="main-title">Calcolatore Predittivo PEG-SLA</h1>
-            <p class="subtitle">Predizione del posizionamento PEG a 6 mesi</p>
+            <h1 class="main-title">ALS PEG Prediction Model</h1>
+            <p class="subtitle">Prediction of PEG placement at 6 months</p>
         </header>
 
-        <!-- Selezione Modello -->
+        <!-- Model Selection -->
         <section class="model-selection">
-            <h2>Seleziona il Modello Predittivo</h2>
+            <h2>Select Predictive Model</h2>
             <div class="model-cards">
                 <div class="model-card" data-model="1">
-                    <h3>Modello 1</h3>
-                    <p>Modello Base</p>
-                    <button class="select-btn" onclick="selectModel(1)">Seleziona</button>
+                    <h3>A-PM</h3>
+                    <p>Anamnestic Prediction Model</p>
+                    <button class="select-btn" onclick="selectModel(1)">Select</button>
                 </div>
                 <div class="model-card" data-model="2">
-                    <h3>Modello 2</h3>
-                    <p>Modello Avanzato</p>
-                    <button class="select-btn" onclick="selectModel(2)">Seleziona</button>
+                    <h3>AF-PM</h3>
+                    <p>Anamnestic and Functional Prediction Model</p>
+                    <button class="select-btn" onclick="selectModel(2)">Select</button>
                 </div>
                 <div class="model-card" data-model="3">
-                    <h3>Modello 3</h3>
-                    <p>Modello Completo</p>
-                    <button class="select-btn" onclick="selectModel(3)">Seleziona</button>
+                    <h3>AN-PM</h3>
+                    <p>Anamnestic and Nutritional Prediction Model</p>
+                    <button class="select-btn" onclick="selectModel(3)">Select</button>
                 </div>
             </div>
         </section>
 
-        <!-- Form Dinamico -->
+        <!-- Dynamic Form  -->
         <section id="form-section" class="form-section hidden">
-            <h2 id="model-title">Inserisci i Dati del Paziente</h2>
+            <h2 id="model-title">Insert Patient Data</h2>
             <form id="prediction-form">
                 <div id="form-fields" class="form-fields">
-                    <!-- I campi verranno generati dinamicamente -->
+                    <!-- These field will be generated dynamically -->
                 </div>
-                <button type="submit" class="calculate-btn">Calcola Predizione</button>
+                <button type="submit" class="calculate-btn">Calculate Prediction</button>
             </form>
         </section>
 
-        <!-- Risultati -->
+        <!-- Results -->
         <section id="results-section" class="results-section hidden">
-            <h2>Risultato della Predizione</h2>
+            <h2>Prediction Result</h2>
             <div class="result-card">
                 <div class="result-value">
                     <span id="prediction-result">--</span>%
@@ -62,10 +62,10 @@
                     Probabilità di necessità di PEG a 6 mesi
                 </p>
                 <div class="result-interpretation" id="result-interpretation">
-                    <!-- Interpretazione del risultato -->
+                    <!-- Result Interpretation -->
                 </div>
             </div>
-            <button class="reset-btn" onclick="resetCalculator()">Nuovo Calcolo</button>
+            <button class="reset-btn" onclick="resetCalculator()">New Prediction</button>
         </section>
     </div>
 
