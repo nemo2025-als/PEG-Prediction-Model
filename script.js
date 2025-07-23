@@ -10,10 +10,10 @@ const models = {
                 { value: "spinal", label: "Spinal" }
               ]
             },
-            { id: "NIV_use", label: "Use of NIV at Evaluation", type: "radio",
+            { id: "NIV_use", label: "Use of NIV at Evaluation", type: "select",
               options: [
-                { label: "Yes", value: "yes" },
-                { label: "No", value: "no" }
+                { value: "yes", label: "Yes" },
+                { value: "no", label: "No" }
               ]
             }
         ],
@@ -26,11 +26,9 @@ const models = {
     2: {
         name: "Anamnestic and Functional Prediction Model",
         fields: [
-            { id: "age", label: "Età", type: "number", min: 18, max: 100 },
-            { id: "alsfrs_total", label: "ALSFRS-R Totale", type: "number", min: 0, max: 48 },
-            { id: "bulbar_score", label: "Score Bulbare", type: "number", min: 0, max: 12 },
-            { id: "fvc", label: "FVC %", type: "number", min: 0, max: 150 },
-            { id: "bmi", label: "BMI", type: "number", min: 10, max: 50, step: 0.1 }
+            { id: "age", label: "Age at Evaluation", type: "number", min: 18, max: 100 },
+            { id: "bulbar_score", label: "Bulbar Subscore", type: "number", min: 0, max: 12 },
+            { id: "fvc", label: "FVC%", type: "number", min: 0, max: 150, step: 0.1 },
         ],
         // Sostituisci con la tua equazione reale
         calculate: (data) => {
@@ -42,18 +40,22 @@ const models = {
     3: {
         name: "Anamnestic and Nutritional Prediction Model",
         fields: [
-            { id: "age", label: "Età", type: "number", min: 18, max: 100 },
-            { id: "alsfrs_total", label: "ALSFRS-R Totale", type: "number", min: 0, max: 48 },
-            { id: "bulbar_score", label: "Score Bulbare", type: "number", min: 0, max: 12 },
-            { id: "fvc", label: "FVC %", type: "number", min: 0, max: 150 },
-            { id: "bmi", label: "BMI", type: "number", min: 10, max: 50, step: 0.1 },
-            { id: "onset_site", label: "Sede di Esordio", type: "select", 
+            { id: "age", label: "Age at Evaluation", type: "number", min: 18, max: 100 },
+            { id: "onset_site", label: "Site of Onset", type: "select", 
               options: [
-                { value: "bulbar", label: "Bulbare" },
-                { value: "spinal", label: "Spinale" }
+                { value: "bulbar", label: "Bulbar" },
+                { value: "spinal", label: "Spinal" }
               ]
             },
-            { id: "disease_duration", label: "Durata Malattia (mesi)", type: "number", min: 0, max: 120 }
+            { id: "NIV_use", label: "Use of NIV at Evaluation", type: "select",
+              options: [
+                { value: "yes", label: "Yes" },
+                { value: "no", label: "No" }
+              ]
+            }
+            { id: "bmi", label: "BMI at Evaluation", type: "number", min: 10, max: 50, step: 0.1 },
+            { id: "pre_weight", label: "Premorbid Weight", type: "number", min: 0, max: 150 }
+            { id: "post_weight", label: "Weight at Evaluation", type: "number", min: 0, max: 150 }
         ],
         // Sostituisci con la tua equazione reale
         calculate: (data) => {
