@@ -19,7 +19,9 @@ const models = {
         ],
         // Esempio di formula - sostituisci con la tua equazione reale
         calculate: (data) => {
-            const logit = -5.2 + (0.05 * data.age) - (0.12 * onsetWeight) + (0.3 * onsetWeight);
+            const onsetWeight = data.onset_site === "bulbar" ? 1 : 0;
+            const NIVWeight = data.NIV_use === "yes" ? 1 : 0;
+            const logit = (0.0408 * data.age) + (0.9503 * onsetWeight) + (1.0346 * NIVWeight);
             return 100 / (1 + Math.exp(-logit));
         }
     },
@@ -91,7 +93,7 @@ function showForm(modelId) {
     const modelTitle = document.getElementById('model-title');
     
     // Aggiorna titolo
-    modelTitle.textContent = `${model.name} - Inserisci i Dati del Paziente`;
+    modelTitle.textContent = `${model.name} - Insert Patient Data`;
     
     // Genera i campi del form
     formFields.innerHTML = '';
@@ -103,7 +105,7 @@ function showForm(modelId) {
             formGroup.innerHTML = `
                 <label for="${field.id}">${field.label}</label>
                 <select id="${field.id}" name="${field.id}" required>
-                    <option value="">Seleziona...</option>
+                    <option value="">Select...</option>
                     ${field.options.map(opt => 
                         `<option value="${opt.value}">${opt.label}</option>`
                     ).join('')}
