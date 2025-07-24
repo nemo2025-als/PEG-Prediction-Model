@@ -241,8 +241,8 @@ function showResults(prediction) {
         descriptionText = 'The probability of needing a PEG in the next 6 months is high. A specialist assessment is recommended.';
     }
     
-    // Aggiorna il livello di rischio
-    probLevelElement.textContent = `Probability: ${prob}`;
+    // Aggiorna il livello di rischio con il valore della predizione (TEMPORANEO PER TEST <br><small style="font-size: 0.5em; opacity: 0.7;">p = ${prediction.toFixed(4)}</small>)
+    probLevelElement.innerHTML = `Probability: ${prob}<br><small style="font-size: 0.5em; opacity: 0.7;">p = ${prediction.toFixed(4)}</small>`;
     probLevelElement.style.color = prob === 'High' ? '#e74c3c' : '#27ae60';
     
     // Aggiorna la descrizione del rischio
@@ -251,35 +251,37 @@ function showResults(prediction) {
     // Ottieni i valori predittivi specifici per il modello
     const predictiveValues = modelPredictiveValues[selectedModel];
     
-    // Calcola i decili in base al risultato
+    // Calcola i valori della coorte con i casi particolari
     let cohortText = '';
+    let patientsValue = null;
     
-    if (prob === 'High') {
-        // Per risultati High, considera solo decili 0.6-1.0
-        const relevantDeciles = [0.6, 0.7, 0.8, 0.9, 1.0];
-        const closestDeciles = findClosestDeciles(prediction, relevantDeciles);
+    // Caso 1: predizione > 0.5 ma < cutoff
+    if (prediction > 0.5 && prediction < cutoff) {
+        patientsValue = predictiveValues[0.5];
+    }
+    // Caso 2: predizione < 0.6 ma > cutoff
+    else if (prediction < 0.6 && prediction > cutoff) {
+        patientsValue = predictiveValues[0.6];
+    }
+    // Altri casi
+    else {
+        const lowerDecile = Math.floor(prediction * 10) / 10;
+        const upperDecile = Math.ceil(prediction * 10) / 10;
         
-        if (closestDeciles.lower === closestDeciles.upper) {
-            const patients = predictiveValues[closestDeciles.lower];
-            cohortText = `Considering a cohort of 100 patients with similar disease conditions, <strong>${patients}</strong> patients will have PEG placement within 6 months.`;
+        // Se cade esattamente su un decile o tra decili con stesso valore
+        if (lowerDecile === upperDecile || predictiveValues[lowerDecile] === predictiveValues[upperDecile]) {
+            patientsValue = predictiveValues[lowerDecile];
         } else {
-            const lowerPatients = predictiveValues[closestDeciles.lower];
-            const upperPatients = predictiveValues[closestDeciles.upper];
+            // Mostra range solo se i valori sono diversi
+            const lowerPatients = predictiveValues[lowerDecile];
+            const upperPatients = predictiveValues[upperDecile];
             cohortText = `Considering a cohort of 100 patients with similar disease conditions, <strong>${lowerPatients} - ${upperPatients}</strong> patients will have PEG placement within 6 months.`;
         }
-    } else {
-        // Per risultati Low, considera solo decili 0.0-0.5
-        const relevantDeciles = [0.0, 0.2, 0.3, 0.4, 0.5];
-        const closestDeciles = findClosestDeciles(prediction, relevantDeciles);
-        
-        if (closestDeciles.lower === closestDeciles.upper) {
-            const patients = predictiveValues[closestDeciles.lower];
-            cohortText = `Considering a cohort of 100 patients with similar disease conditions, <strong>${patients}</strong> patients will have PEG placement within 6 months.`;
-        } else {
-            const lowerPatients = predictiveValues[closestDeciles.lower];
-            const upperPatients = predictiveValues[closestDeciles.upper];
-            cohortText = `Considering a cohort of 100 patients with similar disease conditions, <strong>${lowerPatients} - ${upperPatients}</strong> patients will have PEG placement within 6 months.`;
-        }
+    }
+    
+    // Se abbiamo un valore singolo, costruisci il testo
+    if (patientsValue !== null && cohortText === '') {
+        cohortText = `Considering a cohort of 100 patients with similar disease conditions, <strong>${patientsValue}</strong> patients will have PEG placement within 6 months.`;
     }
     
     // Aggiorna l'interpretazione della coorte
@@ -290,29 +292,6 @@ function showResults(prediction) {
     
     // Scrolla ai risultati
     resultsSection.scrollIntoView({ behavior: 'smooth' });
-}
-
-// Funzione helper per trovare i decili più vicini
-function findClosestDeciles(prediction, relevantDeciles) {
-    let lower = relevantDeciles[0];
-    let upper = relevantDeciles[relevantDeciles.length - 1];
-    
-    for (let i = 0; i < relevantDeciles.length - 1; i++) {
-        if (prediction >= relevantDeciles[i] && prediction <= relevantDeciles[i + 1]) {
-            lower = relevantDeciles[i];
-            upper = relevantDeciles[i + 1];
-            break;
-        }
-    }
-    
-    // Se la predizione è esattamente su un decile
-    for (let decile of relevantDeciles) {
-        if (Math.abs(prediction - decile) < 0.001) {
-            return { lower: decile, upper: decile };
-        }
-    }
-    
-    return { lower, upper };
 }
 
 // Reset del calcolatore
