@@ -222,15 +222,15 @@ body {
     margin-bottom: 20px;
 }
 
-/* Risk Level Styling */
-#risk-level {
-    font-size: 3em;
+/* Probability Level Styling */
+#prob-level {
+    font-size: 1.7em;
     font-weight: 700;
     display: block;
     margin-bottom: 20px;
 }
 
-#risk-description {
+#prob-description {
     font-size: 1.3em;
     margin-bottom: 30px;
     line-height: 1.5;
