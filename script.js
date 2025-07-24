@@ -76,7 +76,7 @@ const models = {
             
             const logit = 0.9190 + (0.0455 * data.age) + (0.7473 * onsetWeight) + 
                           (1.2324 * NIVWeight) + (-0.2014 * data.bmi) + 
-                          (0.8990 * (100 * (1 - data.pre_weight/data.post_weight)) / timeSinceOnsetMonths);
+                          (0.8990 * (100 * (1 - data.post_weight/data.pre_weight)) / timeSinceOnsetMonths);
             return 1 / (1 + Math.exp(-logit));
         }
     }
