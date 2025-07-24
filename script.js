@@ -3,7 +3,7 @@ const models = {
     1: {
         name: "Anamnestic Prediction Model",
         fields: [
-            { id: "age", label: "Age at Evaluation", type: "number", min: 18, max: 100 },
+            { id: "age", label: "Age at Evaluation, years", type: "number", min: 18, max: 100 },
             { id: "onset_site", label: "Site of Onset", type: "select", 
               options: [
                 { value: "bulbar", label: "Bulbar" },
@@ -27,9 +27,9 @@ const models = {
     2: {
         name: "Anamnestic and Functional Prediction Model",
         fields: [
-            { id: "age", label: "Age at Evaluation", type: "number", min: 18, max: 100 },
+            { id: "age", label: "Age at Evaluation, years", type: "number", min: 18, max: 100 },
             { id: "bulbar_score", label: "Bulbar Subscore", type: "number", min: 0, max: 12 },
-            { id: "fvc", label: "FVC%", type: "number", min: 0, max: 150, step: 0.1 }
+            { id: "fvc", label: "FVC%, seated", type: "number", min: 0, max: 150, step: 0.1 }
         ],
         calculate: (data) => {
             const logit = 3.3238 + (0.0730 * data.age) + (-0.6943 * data.bulbar_score) + (-0.0317 * data.fvc);
@@ -39,7 +39,7 @@ const models = {
     3: {
         name: "Anamnestic and Nutritional Prediction Model",
         fields: [
-            { id: "age", label: "Age at Evaluation", type: "number", min: 18, max: 100 },
+            { id: "age", label: "Age at Evaluation, years", type: "number", min: 18, max: 100 },
             { id: "onset_site", label: "Site of Onset", type: "select", 
               options: [
                 { value: "bulbar", label: "Bulbar" },
@@ -52,16 +52,31 @@ const models = {
                 { value: "no", label: "No" }
               ]
             },
-            { id: "bmi", label: "BMI at Evaluation", type: "number", min: 10, max: 50, step: 0.1 },
-            { id: "pre_weight", label: "Premorbid Weight", type: "number", min: 0, max: 150 },
-            { id: "post_weight", label: "Weight at Evaluation", type: "number", min: 0, max: 150 }
+            { id: "bmi", label: "BMI at Evaluation, kg/m²", type: "number", min: 10, max: 50, step: 0.1 },
+            { id: "pre_weight", label: "Premorbid Weight, kg", type: "number", min: 0, max: 150 },
+            { id: "post_weight", label: "Weight at Evaluation, kg", type: "number", min: 0, max: 150 },
+            { id: "onset_date", label: "Date of Disease Onset", type: "date", min: 01/01/1900, max: new Date().toISOString().split("T")[0] },
+            { id: "eval_date", label: "Date of Current Evaluation", type: "date", min: 01/01/1900, max: new Date().toISOString().split("T")[0] }
         ],
         calculate: (data) => {
+            const getMonthDifference = (startDate, endDate) => {
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+                const years = end.getFullYear() - start.getFullYear();
+                const months = end.getMonth() - start.getMonth();
+                const totalMonths = years * 12 + months;
+                const daysInMonth = new Date(end.getFullYear(), end.getMonth() + 1, 0).getDate();
+                const dayFraction = (end.getDate() - start.getDate()) / daysInMonth;
+                return +(totalMonths + dayFraction).toFixed(1);
+            };
+            
             const onsetWeight = data.onset_site === "bulbar" ? 1 : 0;
             const NIVWeight = data.NIV_use === "yes" ? 1 : 0;
+            const timeSinceOnsetMonths = getMonthDifference(data.onset_date, data.eval_date);
+            
             const logit = 0.9190 + (0.0455 * data.age) + (0.7473 * onsetWeight) + 
                           (1.2324 * NIVWeight) + (-0.2014 * data.bmi) + 
-                          (0.8990 * 100*(1 - data.pre_weight/data.post_weight));
+                          (0.8990 * (100 * (1 - data.pre_weight/data.post_weight)) / timeSinceOnsetMonths);
             return 1 / (1 + Math.exp(-logit));
         }
     }
@@ -175,28 +190,28 @@ document.getElementById('prediction-form').addEventListener('submit', function(e
 // Mostra i risultati
 function showResults(prediction) {
     const resultsSection = document.getElementById('results-section');
-    const riskLevelElement = document.getElementById('risk-level');
-    const riskDescription = document.getElementById('risk-description');
+    const probLevelElement = document.getElementById('prob-level');
+    const probDescription = document.getElementById('prob-description');
     const interpretation = document.getElementById('result-interpretation');
     
     // Determina il livello di rischio
-    let risk = '';
+    let prob = '';
     let descriptionText = '';
     
     if (prediction < 0.5) {
-        risk = 'Low';
-        descriptionText = 'The risk of needing a PEG in the next 6 months is low. Continue standard monitoring.';
+        prob = 'Low';
+        descriptionText = 'The probability of needing a PEG in the next 6 months is low. Continue standard monitoring.';
     } else {
-        risk = 'High';
-        descriptionText = 'The risk of needing a PEG in the next 6 months is high. A specialist assessment is recommended.';
+        prob = 'High';
+        descriptionText = 'The probability of needing a PEG in the next 6 months is high. A specialist assessment is recommended.';
     }
     
     // Aggiorna il livello di rischio
-    riskLevelElement.textContent = `Risk: ${risk}`;
-    riskLevelElement.style.color = risk === 'High' ? '#e74c3c' : '#27ae60';
+    probLevelElement.textContent = `Probability: ${prob}`;
+    probLevelElement.style.color = prob === 'High' ? '#e74c3c' : '#27ae60';
     
     // Aggiorna la descrizione del rischio
-    riskDescription.textContent = descriptionText;
+    probDescription.textContent = descriptionText;
     
     // Calcola i valori della coorte
     const lowerDecile = Math.floor(prediction * 10) / 10;
