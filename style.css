@@ -332,11 +332,30 @@ body {
     }
 }
 
-/* Ottimizzazione specifica per iPhone e dispositivi molto piccoli */
-@media (max-width: 375px) {
+/* Ottimizzazione specifica per iPhone e dispositivi mobili */
+@media (max-width: 414px) { /* iPhone 6/7/8 Plus */
+    #prob-level {
+        font-size: 1.3em;
+    }
+    
+    .result-card {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 390px) { /* iPhone 12/13/14 Pro */
+    #prob-level {
+        font-size: 1.2em;
+    }
+    
+    .result-card {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 375px) { /* iPhone 6/7/8/SE */
     #prob-level {
         font-size: 1.1em;
-        line-height: 1.4;
     }
     
     #prob-description {
@@ -347,16 +366,33 @@ body {
         font-size: 0.9em;
         padding: 15px;
     }
-    
-    .result-card {
-        padding: 25px;
+}
+
+@media (max-width: 360px) { /* Dispositivi Android piccoli */
+    #prob-level {
+        font-size: 1em;
     }
 }
 
-/* Per schermi molto piccoli */
-@media (max-width: 320px) {
+@media (max-width: 320px) { /* iPhone SE 1st gen */
     #prob-level {
-        font-size: 1em;
+        font-size: 0.9em;
+    }
+    
+    #prob-description {
+        font-size: 0.85em;
+    }
+    
+    .result-card {
+        padding: 20px;
+    }
+}
+
+/* Fix per overflow del testo */
+@media (max-width: 414px) {
+    .result-value {
+        word-break: break-word;
+        overflow-wrap: break-word;
     }
 }
 
