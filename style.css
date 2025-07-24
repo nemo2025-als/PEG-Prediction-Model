@@ -300,3 +300,34 @@ body {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+/* Responsive per il testo dei risultati */
+@media (max-width: 768px) {
+    #prob-level {
+        font-size: 1.2em;
+    }
+    
+    #prob-description {
+        font-size: 1.1em;
+    }
+    
+    .result-interpretation {
+        font-size: 1em;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    #prob-level {
+        font-size: 1em;
+    }
+    
+    #prob-description {
+        font-size: 1em;
+    }
+    
+    .result-interpretation {
+        font-size: 0.95em;
+        padding: 15px;
+    }
+}
