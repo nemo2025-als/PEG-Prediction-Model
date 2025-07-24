@@ -142,9 +142,9 @@ body {
 }
 
 /* Layout specifico per il modello 3 - 3 colonne per riga */
-.form-fields.three-columns {
+.form-fields.four-columns {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     max-width: 900px;
     margin: 0 auto 30px;
     gap: 25px;
@@ -290,13 +290,13 @@ body {
         grid-template-columns: 1fr;
     }
     
-    .form-fields.three-columns {
+    .form-fields.four-columns {
         grid-template-columns: 1fr;
     }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
-    .form-fields.three-columns {
+    .form-fields.four-columns {
         grid-template-columns: repeat(2, 1fr);
     }
 }
