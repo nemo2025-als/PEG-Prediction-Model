@@ -153,7 +153,7 @@ function showForm(modelId) {
     const modelTitle = document.getElementById('model-title');
     
     // Aggiorna titolo
-    modelTitle.textContent = `${model.name} - Insert Patient Data`;
+    modelTitle.textContent = `${model.name}`;
     
     // Aggiungi o rimuovi la classe per il modello 3
     if (modelId === 3) {
