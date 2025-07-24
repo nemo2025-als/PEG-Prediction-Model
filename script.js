@@ -307,3 +307,17 @@ function resetCalculator() {
     // Scrolla all'inizio
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// Rileva se siamo su mobile e abbrevia il testo
+function isMobile() {
+    return window.innerWidth <= 414;
+}
+
+// Modifica nella funzione showResults, sostituisci la riga del probLevelElement con:
+if (isMobile()) {
+    probLevelElement.innerHTML = `${prob}<br><small style="font-size: 0.5em; opacity: 0.7;">p = ${prediction.toFixed(4)}</small>`;
+} else {
+    probLevelElement.innerHTML = `Probability: ${prob}<br><small style="font-size: 0.5em; opacity: 0.7;">p = ${prediction.toFixed(4)}</small>`;
+}
+
+
