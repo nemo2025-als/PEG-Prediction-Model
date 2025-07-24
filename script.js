@@ -242,7 +242,7 @@ function showResults(prediction) {
     }
     
     // Aggiorna il livello di rischio con il valore della predizione (TEMPORANEO PER TEST - <br><small style="font-size: 0.5em; opacity: 0.7;">p = ${prediction.toFixed(4)}</small>)
-    probLevelElement.innerHTML = `Probability: ${prob}<br><small style="font-size: 0.5em; opacity: 0.7;">p = ${prediction.toFixed(4)}</small>`;
+    probLevelElement.innerHTML = `${prob}<br><small style="font-size: 0.5em; opacity: 0.7;">p = ${prediction.toFixed(4)}</small>`;
     probLevelElement.style.color = prob === 'High' ? '#e74c3c' : '#27ae60';
     
     // Aggiorna la descrizione del rischio
