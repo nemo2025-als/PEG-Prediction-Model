@@ -153,13 +153,13 @@ function showForm(modelId) {
     const modelTitle = document.getElementById('model-title');
     
     // Aggiorna titolo
-    modelTitle.textContent = `${model.name}`;
+    modelTitle.textContent = model.name;
     
     // Aggiungi o rimuovi la classe per il modello 3
     if (modelId === 3) {
-        formFields.classList.add('three-columns');
+        formFields.classList.add('four-columns');
     } else {
-        formFields.classList.remove('three-columns');
+        formFields.classList.remove('four-columns');
     }
     
     // Genera i campi del form
