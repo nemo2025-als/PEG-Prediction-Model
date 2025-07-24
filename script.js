@@ -82,6 +82,53 @@ const models = {
     }
 };
 
+// Valori predittivi specifici per ogni modello basati sul file Excel
+const modelPredictiveValues = {
+    1: { // A-PM
+        0.0: 0,
+        0.2: 25,
+        0.3: 28,
+        0.4: 32,
+        0.5: 34,
+        0.6: 66,
+        0.7: 80,
+        0.8: 94,
+        0.9: 100,
+        1.0: 100
+    },
+    2: { // AF-PM
+        0.0: 0,
+        0.2: 9,
+        0.3: 14,
+        0.4: 17,
+        0.5: 18,
+        0.6: 87,
+        0.7: 88,
+        0.8: 92,
+        0.9: 99,
+        1.0: 100
+    },
+    3: { // AN-PM
+        0.0: 0,
+        0.2: 9,
+        0.3: 14,
+        0.4: 16,
+        0.5: 18,
+        0.6: 87,
+        0.7: 88,
+        0.8: 92,
+        0.9: 99,
+        1.0: 100
+    }
+};
+
+// Cutoff specifici per ogni modello
+const modelCutoffs = {
+    1: 0.5258,
+    2: 0.5779,
+    3: 0.5167
+};
+
 let selectedModel = null;
 
 // Seleziona un modello
@@ -172,53 +219,6 @@ document.getElementById('prediction-form').addEventListener('submit', function(e
     showResults(prediction);
 });
 
-// Valori predittivi specifici per ogni modello basati sul file Excel
-const modelPredictiveValues = {
-    1: { // A-PM
-        0.0: 0,
-        0.2: 25,
-        0.3: 28,
-        0.4: 32,
-        0.5: 34,
-        0.6: 66,
-        0.7: 80,
-        0.8: 94,
-        0.9: 100,
-        1.0: 100
-    },
-    2: { // AF-PM
-        0.0: 0,
-        0.2: 9,
-        0.3: 14,
-        0.4: 17,
-        0.5: 18,
-        0.6: 87,
-        0.7: 88,
-        0.8: 92,
-        0.9: 99,
-        1.0: 100
-    },
-    3: { // AN-PM
-        0.0: 0,
-        0.2: 9,
-        0.3: 14,
-        0.4: 16,
-        0.5: 18,
-        0.6: 87,
-        0.7: 88,
-        0.8: 92,
-        0.9: 99,
-        1.0: 100
-    }
-};
-
-// Cutoff specifici per ogni modello
-const modelCutoffs = {
-    1: 0.5258,
-    2: 0.5779,
-    3: 0.5167
-};
-
 // Mostra i risultati
 function showResults(prediction) {
     const resultsSection = document.getElementById('results-section');
@@ -241,7 +241,7 @@ function showResults(prediction) {
         descriptionText = 'The probability of needing a PEG in the next 6 months is high. A specialist assessment is recommended.';
     }
     
-    // Aggiorna il livello di rischio con il valore della predizione (TEMPORANEO PER TEST <br><small style="font-size: 0.5em; opacity: 0.7;">p = ${prediction.toFixed(4)}</small>)
+    // Aggiorna il livello di rischio con il valore della predizione (TEMPORANEO PER TEST - <br><small style="font-size: 0.5em; opacity: 0.7;">p = ${prediction.toFixed(4)}</small>)
     probLevelElement.innerHTML = `Probability: ${prob}<br><small style="font-size: 0.5em; opacity: 0.7;">p = ${prediction.toFixed(4)}</small>`;
     probLevelElement.style.color = prob === 'High' ? '#e74c3c' : '#27ae60';
     
