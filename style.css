@@ -331,3 +331,32 @@ body {
         padding: 15px;
     }
 }
+
+/* Ottimizzazione specifica per iPhone e dispositivi molto piccoli */
+@media (max-width: 375px) {
+    #prob-level {
+        font-size: 1.1em;
+        line-height: 1.4;
+    }
+    
+    #prob-description {
+        font-size: 0.95em;
+    }
+    
+    .result-interpretation {
+        font-size: 0.9em;
+        padding: 15px;
+    }
+    
+    .result-card {
+        padding: 25px;
+    }
+}
+
+/* Per schermi molto piccoli */
+@media (max-width: 320px) {
+    #prob-level {
+        font-size: 1em;
+    }
+}
+
