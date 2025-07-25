@@ -226,7 +226,6 @@ document.getElementById('prediction-form').addEventListener('submit', function(e
 // Mostra i risultati
 function showResults(prediction) {
     const resultsSection = document.getElementById('results-section');
-    const probLevelElement = document.getElementById('prob-level');
     const probDescription = document.getElementById('prob-description');
     const interpretation = document.getElementById('result-interpretation');
     
@@ -264,49 +263,58 @@ function showResults(prediction) {
         patientsValue = predictiveValues[0.6];
     }
     // Altri casi
-else {
-    const lowerDecile = Math.floor(prediction * 10) / 10;
-    const upperDecile = Math.ceil(prediction * 10) / 10;
-    
-    // Gestisci i casi speciali per valori molto bassi
-    let actualLower = lowerDecile;
-    let actualUpper = upperDecile;
-    
-    // Se il valore calcolato non esiste nell'array, trova il più vicino
-    if (!(actualLower in predictiveValues)) {
-        // Per valori sotto 0.2, usa 0.0
-        actualLower = 0.0;
-    }
-    
-    if (!(actualUpper in predictiveValues)) {
-        // Trova il decile successivo disponibile
-        const availableDeciles = [0.0, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
-        for (let decile of availableDeciles) {
-            if (decile >= upperDecile) {
-                actualUpper = decile;
-                break;
+    else {
+        const lowerDecile = Math.floor(prediction * 10) / 10;
+        const upperDecile = Math.ceil(prediction * 10) / 10;
+        
+        // Gestisci i casi speciali per valori molto bassi
+        let actualLower = lowerDecile;
+        let actualUpper = upperDecile;
+        
+        // Se il valore calcolato non esiste nell'array, trova il più vicino
+        if (!(actualLower in predictiveValues)) {
+            actualLower = 0.0;
+        }
+        
+        if (!(actualUpper in predictiveValues)) {
+            // Trova il decile successivo disponibile
+            const availableDeciles = [0.0, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+            for (let decile of availableDeciles) {
+                if (decile >= upperDecile) {
+                    actualUpper = decile;
+                    break;
+                }
+            }
+            // Se non trovato, usa 0.2 come fallback
+            if (!(actualUpper in predictiveValues)) {
+                actualUpper = 0.2;
             }
         }
-        // Se non trovato, usa 0.2 come fallback
-        if (!(actualUpper in predictiveValues)) {
-            actualUpper = 0.2;
-        }
-    }
-    
-    // Se cade esattamente su un decile o tra decili con stesso valore
-    if (actualLower === actualUpper || predictiveValues[actualLower] === predictiveValues[actualUpper]) {
-        patientsValue = predictiveValues[actualLower];
-    } else {
-        // Mostra range solo se i valori sono diversi
-        const lowerPatients = predictiveValues[actualLower];
-        const upperPatients = predictiveValues[actualUpper];
-        cohortText = `Based on the clinical data provided, <strong>among 100 patients</strong> with the same disease conditions, <br><strong>between ${lowerPatients} - ${upperPatients} are expected to actually require PEG placement</strong> within 6 months.`;
+        
+        // Se cade esattamente su un decile o tra decili con stesso valore
+        if (actualLower === actualUpper || predictiveValues[actualLower] === predictiveValues[actualUpper]) {
+            patientsValue = predictiveValues[actualLower];
+        } else {
+            // Mostra range solo se i valori sono diversi
+            const lowerPatients = predictiveValues[actualLower];
+            const upperPatients = predictiveValues[actualUpper];
+            
+            // Usa testo diverso per High vs Low
+            if (prob === 'High') {
+                cohortText = `Based on the clinical data provided, <strong>among 100 patients</strong> with the same disease conditions, <strong>between ${lowerPatients} to ${upperPatients}</strong> are expected to actually require PEG placement within the next 6 months.`;
+            } else {
+                cohortText = `Based on the clinical data provided, <strong>among 100 patients</strong> with the same disease conditions, <strong>between ${lowerPatients} to ${upperPatients}</strong> are still expected to require PEG placement within the next 6 months.`;
+            }
         }
     }
     
     // Se abbiamo un valore singolo, costruisci il testo
     if (patientsValue !== null && cohortText === '') {
-        cohortText = `Based on the clinical data provided, <strong>among 100 patients</strong> with the same disease conditions, <br><strong>${patientsValue} are expected to actually require PEG placement</strong> within 6 months.`;
+        if (prob === 'High') {
+            cohortText = `Based on the clinical data provided, <strong>among 100 patients</strong> with the same disease conditions, <strong>${patientsValue}</strong> are expected to actually require PEG placement within the next 6 months.`;
+        } else {
+            cohortText = `Based on the clinical data provided, <strong>among 100 patients</strong> with the same disease conditions, <strong>${patientsValue}</strong> are still expected to require PEG placement within the next 6 months.`;
+        }
     }
     
     // Aggiorna l'interpretazione della coorte
