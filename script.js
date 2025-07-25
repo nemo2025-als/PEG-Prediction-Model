@@ -145,6 +145,7 @@ function selectModel(modelId) {
     showForm(modelId);
 }
 
+
 // Mostra il form con i campi del modello selezionato
 function showForm(modelId) {
     const model = models[modelId];
@@ -197,6 +198,9 @@ function showForm(modelId) {
     // Mostra la sezione del form
     formSection.classList.remove('hidden');
     document.getElementById('results-section').classList.add('hidden');
+
+     // Scrolla ai risultati
+    formSection.scrollIntoView({ behavior: 'smooth' });
 }
 
 // Gestisce il submit del form
