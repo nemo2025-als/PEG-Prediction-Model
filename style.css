@@ -147,7 +147,7 @@ body {
     color: #2c3e50;
 }
 
-/* Layout specifico per il modello 3 - 3 colonne per riga */
+/* Layout specifico per il modello 3 - 4 colonne per riga */
 .form-fields.four-columns {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -223,15 +223,9 @@ body {
     margin-bottom: 30px;
 }
 
-.result-value {
-    font-size: 4em;
-    font-weight: 700;
-    margin-bottom: 20px;
-}
-
 /* Probability Level Styling */
 #prob-description {
-    font-size: 2em;  /* Ridotto per essere più piccolo */
+    font-size: 1.3em;  /* Dimensione appropriata per il testo principale */
     margin-bottom: 30px;
     line-height: 1.5;
     color: white;
@@ -301,68 +295,31 @@ body {
     }
 }
 
-/* Responsive per il testo dei risultati */
+/* Media queries aggiornate */
 @media (max-width: 768px) {
-    
     #prob-description {
-        font-size: 1.2em;
-    }
-    
-    .result-interpretation {
-        font-size: 1em;
-        padding: 20px;
+        font-size: 1.1em;
     }
 }
 
 @media (max-width: 480px) {
-    
     #prob-description {
         font-size: 1em;
     }
-    
-    .result-interpretation {
+}
+
+@media (max-width: 375px) {
+    #prob-description {
         font-size: 0.95em;
-        padding: 15px;
     }
 }
 
-/* Ottimizzazione specifica per iPhone e dispositivi mobili */
-@media (max-width: 414px) { /* iPhone 6/7/8 Plus */
-    
-    .result-card {
-        padding: 30px;
-    }
-}
-
-@media (max-width: 390px) { /* iPhone 12/13/14 Pro */
-    
-    .result-card {
-        padding: 25px;
-    }
-}
-
-@media (max-width: 375px) { /* iPhone 6/7/8/SE */
-    
-    #prob-description {
-        font-size: 1.1em;
-    }
-    
-    .result-interpretation {
-        font-size: 0.9em;
-        padding: 15px;
-    }
-}
-
-@media (max-width: 320px) { /* iPhone SE 1st gen */
-   
+@media (max-width: 320px) {
     #prob-description {
         font-size: 0.9em;
     }
-    
-    .result-card {
-        padding: 20px;
-    }
 }
+Riepil
 
 /* Fix per overflow del testo */
 @media (max-width: 414px) {
