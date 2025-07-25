@@ -342,33 +342,83 @@ function resetCalculator() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Alternativa: Goatcounter
-function initGoatCounter() {
-    // Aggiungi lo script di Goatcounter
-    const script = document.createElement('script');
-    script.src = 'https://gc.zgo.at/count.js';
-    script.setAttribute('data-goatcounter', 'https://nemo2025-als.goatcounter.com/count');
-    script.async = true;
-    document.head.appendChild(script);
+// Contatore visite globale con Firebase
+function initFirebaseCounter() {
+    // Configurazione Firebase
+    const firebaseConfig = {
+         apiKey: "AIzaSyBsaPeqQh-QW0BHphiQHjdowiOhBoWNqTc",
+        authDomain: "peg-prediction-model.firebaseapp.com",
+        databaseURL: "https://peg-prediction-model-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "peg-prediction-model",
+        storageBucket: "peg-prediction-model.firebasestorage.app",
+        messagingSenderId: "1068012856221",
+        appId: "1:1068012856221:web:b5ce1daeb40d701d44c574"
+    };
     
-    // Mostra stats private (dovrai accedere al dashboard Goatcounter)
+    // Inizializza Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    
+    // Riferimento al contatore
+    const visitsRef = database.ref('visits/total');
+    
+    // Incrementa il contatore
+    visitsRef.transaction((currentValue) => {
+        return (currentValue || 0) + 1;
+    });
+    
+    // Registra anche data/ora della visita
+    const visitLogRef = database.ref('visits/log').push();
+    visitLogRef.set({
+        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        userAgent: navigator.userAgent,
+        referrer: document.referrer || 'Direct'
+    });
+    
+    // Mostra statistiche solo con parametro segreto
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('stats') === 'nemo2025') {
-        const counterDiv = document.createElement('div');
-        counterDiv.innerHTML = `
-            <div style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.9); 
-                        color: white; padding: 20px; border-radius: 10px; font-size: 14px; 
-                        z-index: 9999;">
-                <strong>📊 Stats Dashboard</strong><br>
-                <hr style="margin: 10px 0; opacity: 0.3;">
-                Visit: <a href="https://nemo2025-als.goatcounter.com" target="_blank" style="color: #3498db;">
-                    GoatCounter Dashboard
-                </a>
-            </div>
-        `;
-        document.body.appendChild(counterDiv);
+        // Ottieni il conteggio totale
+        visitsRef.once('value').then((snapshot) => {
+            const totalVisits = snapshot.val() || 0;
+            
+            // Conta le visite di oggi
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            const todayTimestamp = today.getTime();
+            
+            database.ref('visits/log')
+                .orderByChild('timestamp')
+                .startAt(todayTimestamp)
+                .once('value')
+                .then((logSnapshot) => {
+                    const todayVisits = logSnapshot.numChildren();
+                    
+                    // Crea il box delle statistiche
+                    const counterDiv = document.createElement('div');
+                    counterDiv.innerHTML = `
+                        <div style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.9); 
+                                    color: white; padding: 20px; border-radius: 10px; font-size: 14px; 
+                                    z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 300px;">
+                            <strong>📊 Global Stats (Firebase)</strong><br>
+                            <hr style="margin: 10px 0; opacity: 0.3;">
+                            Total Visits: <strong>${totalVisits}</strong><br>
+                            Today: <strong>${todayVisits}</strong><br>
+                            <small style="opacity: 0.7;">Real-time global counter</small>
+                            <br><br>
+                            <a href="https://console.firebase.google.com/project/${firebaseConfig.projectId}/database" 
+                               target="_blank" 
+                               style="color: #3498db; text-decoration: none; font-size: 12px;">
+                                View Full Dashboard →
+                            </a>
+                        </div>
+                    `;
+                    document.body.appendChild(counterDiv);
+                });
+        });
     }
 }
 
-// Sostituisci la chiamata a initVisitCounter con questa
-document.addEventListener('DOMContentLoaded', initGoatCounter);
+// Inizializza il contatore Firebase quando la pagina è caricata
+document.addEventListener('DOMContentLoaded', initFirebaseCounter);
+
