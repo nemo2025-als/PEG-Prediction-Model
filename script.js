@@ -245,10 +245,6 @@ function showResults(prediction) {
         descriptionText = '<strong>The patient is expected to require PEG placement</strong> within the next 6 months.<br>A specialist assessment is recommended.';
     }
     
-    // Aggiorna il livello di rischio con il valore della predizione
-    probLevelElement.innerHTML = `${prob}`;
-    probLevelElement.style.color = prob === 'High' ? '#e74c3c' : '#27ae60';
-    
     // Aggiorna la descrizione del rischio
     probDescription.innerHTML = descriptionText;
     
