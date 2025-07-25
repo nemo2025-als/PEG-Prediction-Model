@@ -223,7 +223,7 @@ document.getElementById('prediction-form').addEventListener('submit', function(e
 function showResults(prediction) {
     const resultsSection = document.getElementById('results-section');
     const probLevelElement = document.getElementById('prob-level');
-    const probDescription = document.getElementById('prob-description').innerText;
+    const probDescription = document.getElementById('prob-description');
     const interpretation = document.getElementById('result-interpretation');
     
     // Usa il cutoff specifico del modello
@@ -246,7 +246,7 @@ function showResults(prediction) {
     probLevelElement.style.color = prob === 'High' ? '#e74c3c' : '#27ae60';
     
     // Aggiorna la descrizione del rischio
-    probDescription.textContent = descriptionText;
+    probDescription.innerHTML = descriptionText;
     
     // Ottieni i valori predittivi specifici per il modello
     const predictiveValues = modelPredictiveValues[selectedModel];
