@@ -235,13 +235,14 @@ function showResults(prediction) {
     // Determina il livello di rischio
     let prob = '';
     let descriptionText = '';
-    
+
+    //colori: verde #24d36d, rosso #ff4343
     if (prediction < cutoff) {
         prob = 'Low';
-        descriptionText = '<span style="font-size: 1.5em; color: #24D36D; font-weight: bold;">The patient is not expected to require PEG placement<br>within the next 6 months.</span><br>Continue standard monitoring.';
+        descriptionText = '<span style="font-size: 1.5em; font-weight: bold;">The patient is not expected to require PEG placement<br>within the next 6 months.</span><br>Continue standard monitoring.';
     } else {
         prob = 'High';
-        descriptionText = '<span style="font-size: 1.5em; color: #FF4343; font-weight: bold;">The patient is expected to require PEG placement<br>within the next 6 months.</span><br>A specialist assessment is recommended.';
+        descriptionText = '<span style="font-size: 1.5em; font-weight: bold;">The patient is expected to require PEG placement<br>within the next 6 months.</span><br>A specialist assessment is recommended.';
     }
     
     // Aggiorna la descrizione del rischio
