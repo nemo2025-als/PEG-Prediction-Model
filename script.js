@@ -238,10 +238,10 @@ function showResults(prediction) {
     
     if (prediction < cutoff) {
         prob = 'Low';
-        descriptionText = '<strong>The patient is not expected to require PEG placement</strong> within the next 6 months.<br>Continue standard monitoring.';
+        descriptionText = '<span style="font-size: 1.5em; color: #27ae60; font-weight: bold;">The patient is not expected to require PEG placement within the next 6 months</span>.<br>Continue standard monitoring.';
     } else {
         prob = 'High';
-        descriptionText = '<strong>The patient is expected to require PEG placement</strong> within the next 6 months.<br>A specialist assessment is recommended.';
+        descriptionText = '<span style="font-size: 1.5em; color: #e74c3c; font-weight: bold;">The patient is expected to require PEG placement within the next 6 months</span>.<br>A specialist assessment is recommended.';
     }
     
     // Aggiorna la descrizione del rischio
@@ -301,9 +301,9 @@ function showResults(prediction) {
             
             // Usa testo diverso per High vs Low
             if (prob === 'High') {
-                cohortText = `Based on the clinical data provided, <strong>among 100 patients</strong> with the same disease conditions, <strong>between ${lowerPatients} to ${upperPatients}</strong> are expected to actually require PEG placement within the next 6 months.`;
+                cohortText = `Based on the clinical data provided, <strong>among 100 patients</strong> with the same disease conditions, <strong>between ${lowerPatients} to ${upperPatients} are expected to actually require PEG placement</strong> within the next 6 months.`;
             } else {
-                cohortText = `Based on the clinical data provided, <strong>among 100 patients</strong> with the same disease conditions, <strong>between ${lowerPatients} to ${upperPatients}</strong> are still expected to require PEG placement within the next 6 months.`;
+                cohortText = `Based on the clinical data provided, <strong>among 100 patients</strong> with the same disease conditions, <strong>between ${lowerPatients} to ${upperPatients} are still expected to require PEG placement</strong> within the next 6 months.`;
             }
         }
     }
@@ -311,9 +311,9 @@ function showResults(prediction) {
     // Se abbiamo un valore singolo, costruisci il testo
     if (patientsValue !== null && cohortText === '') {
         if (prob === 'High') {
-            cohortText = `Based on the clinical data provided, <strong>among 100 patients</strong> with the same disease conditions, <strong>${patientsValue}</strong> are expected to actually require PEG placement within the next 6 months.`;
+            cohortText = `Based on the clinical data provided, <strong>among 100 patients</strong> with the same disease conditions, <strong>${patientsValue} are expected to actually require PEG placement</strong> within the next 6 months.`;
         } else {
-            cohortText = `Based on the clinical data provided, <strong>among 100 patients</strong> with the same disease conditions, <strong>${patientsValue}</strong> are still expected to require PEG placement within the next 6 months.`;
+            cohortText = `Based on the clinical data provided, <strong>among 100 patients</strong> with the same disease conditions, <strong>${patientsValue} are still expected to require PEG placement</strong> within the next 6 months.`;
         }
     }
     
