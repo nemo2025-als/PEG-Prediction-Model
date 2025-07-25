@@ -342,57 +342,36 @@ function resetCalculator() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// CONTATORE VISITE AVANZATO
-function initVisitCounter() {
-    // Registra visita con timestamp
-    let visitHistory = JSON.parse(localStorage.getItem('pegCalculatorHistory') || '[]');
-    visitHistory.push({
-        timestamp: Date.now(),
-        userAgent: navigator.userAgent,
-        referrer: document.referrer || 'Direct'
-    });
+// Contatore visite globale con CountAPI
+function initGlobalCounter() {
+    const namespace = 'nemo2025-als.github.io';
+    const key = 'peg-calculator-visits';
     
-    // Mantieni solo le ultime 1000 visite per non riempire localStorage
-    if (visitHistory.length > 1000) {
-        visitHistory = visitHistory.slice(-1000);
-    }
-    
-    localStorage.setItem('pegCalculatorHistory', JSON.stringify(visitHistory));
-    
-    // Mostra statistiche se richiesto
-    const urlParams = new URLSearchParams(window.location.search);
-    const showStats = urlParams.get('stats');
-    
-    if (showStats === 'nemo2025') {
-        const today = new Date().toDateString();
-        const todayVisits = visitHistory.filter(v => new Date(v.timestamp).toDateString() === today).length;
-        
-        // Calcola visite per dispositivo
-        const mobileVisits = visitHistory.filter(v => /Mobile|Android|iPhone/i.test(v.userAgent)).length;
-        const desktopVisits = visitHistory.length - mobileVisits;
-        
-        const counterDiv = document.createElement('div');
-        counterDiv.innerHTML = `
-            <div style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.9); 
-                        color: white; padding: 20px; border-radius: 10px; font-size: 14px; 
-                        z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 300px;">
-                <strong>📊 Private Analytics</strong><br>
-                <hr style="margin: 10px 0; opacity: 0.3;">
-                Total Visits: <strong>${visitHistory.length}</strong><br>
-                Today: <strong>${todayVisits}</strong><br>
-                Mobile: <strong>${mobileVisits}</strong> | Desktop: <strong>${desktopVisits}</strong><br>
-                <small style="opacity: 0.7;">Tracking since: ${new Date(visitHistory[0]?.timestamp || Date.now()).toLocaleDateString()}</small>
-                <br><br>
-                <button onclick="localStorage.clear(); location.reload();" 
-                        style="background: #e74c3c; color: white; border: none; padding: 5px 10px; 
-                               border-radius: 5px; cursor: pointer; font-size: 12px;">
-                    Clear Stats
-                </button>
-            </div>
-        `;
-        document.body.appendChild(counterDiv);
-    }
+    // Incrementa il contatore
+    fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
+        .then(response => response.json())
+        .then(data => {
+            // Mostra il contatore solo con parametro segreto
+            const urlParams = new URLSearchParams(window.location.search);
+            const showStats = urlParams.get('stats');
+            
+            if (showStats === 'nemo2025') {
+                const counterDiv = document.createElement('div');
+                counterDiv.innerHTML = `
+                    <div style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.9); 
+                                color: white; padding: 20px; border-radius: 10px; font-size: 14px; 
+                                z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <strong>📊 Global Stats</strong><br>
+                        <hr style="margin: 10px 0; opacity: 0.3;">
+                        Total Global Visits: <strong>${data.value}</strong><br>
+                        <small style="opacity: 0.7;">All users worldwide</small>
+                    </div>
+                `;
+                document.body.appendChild(counterDiv);
+            }
+        })
+        .catch(error => console.error('Error fetching counter:', error));
 }
 
-// Inizializza il contatore quando la pagina è caricata
-document.addEventListener('DOMContentLoaded', initVisitCounter);
+// Sostituisci la chiamata a initVisitCounter con questa
+document.addEventListener('DOMContentLoaded', initGlobalCounter);
