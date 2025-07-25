@@ -223,8 +223,7 @@ document.getElementById('prediction-form').addEventListener('submit', function(e
 function showResults(prediction) {
     const resultsSection = document.getElementById('results-section');
     const probLevelElement = document.getElementById('prob-level');
-    const probDescription1 = document.getElementById('prob-description1');
-    const probDescription2 = document.getElementById('prob-description2');
+    const probDescription = document.getElementById('prob-description');
     const interpretation = document.getElementById('result-interpretation');
     
     // Usa il cutoff specifico del modello
@@ -232,17 +231,14 @@ function showResults(prediction) {
     
     // Determina il livello di rischio
     let prob = '';
-    let descriptionText1 = '';
-    let descriptionText2 = '';
+    let descriptionText = '';
     
     if (prediction < cutoff) {
         prob = 'Low';
-        descriptionText1 = 'The probability of needing a PEG in the next 6 months is low.';
-        descriptionText2 = 'Continue standard monitoring.';
+        descriptionText = 'The probability of needing a PEG in the next 6 months is low.<br>Continue standard monitoring.';
     } else {
         prob = 'High';
-        descriptionText1 = 'The probability of needing a PEG in the next 6 months is high.';
-        descriptionText2 = 'A specialist assessment is recommended.';
+        descriptionText = 'The probability of needing a PEG in the next 6 months is high.<br>A specialist assessment is recommended.';
     }
     
     // Aggiorna il livello di rischio con il valore della predizione (TEMPORANEO PER TEST - <br><small style="font-size: 0.5em; opacity: 0.7;">p = ${prediction.toFixed(4)}</small>)
@@ -250,8 +246,7 @@ function showResults(prediction) {
     probLevelElement.style.color = prob === 'High' ? '#e74c3c' : '#27ae60';
     
     // Aggiorna la descrizione del rischio
-    probDescription1.textContent = descriptionText1;
-    probDescription2.textContent = descriptionText2;
+    probDescription.textContent = descriptionText;
     
     // Ottieni i valori predittivi specifici per il modello
     const predictiveValues = modelPredictiveValues[selectedModel];
@@ -280,13 +275,13 @@ function showResults(prediction) {
             // Mostra range solo se i valori sono diversi
             const lowerPatients = predictiveValues[lowerDecile];
             const upperPatients = predictiveValues[upperDecile];
-            cohortText = `Considering a cohort of 100 patients with similar disease conditions, <strong>${lowerPatients} - ${upperPatients}</strong> patients will have PEG placement within 6 months.`;
+            cohortText = `Considering a cohort of 100 patients with similar disease conditions, <br><strong>${lowerPatients} - ${upperPatients}</strong> patients will have PEG placement within 6 months.`;
         }
     }
     
     // Se abbiamo un valore singolo, costruisci il testo
     if (patientsValue !== null && cohortText === '') {
-        cohortText = `Considering a cohort of 100 patients with similar disease conditions, <strong>${patientsValue}</strong> patients will have PEG placement within 6 months.`;
+        cohortText = `Considering a cohort of 100 patients with similar disease conditions, <br><strong>${patientsValue}</strong> patients will have PEG placement within 6 months.`;
     }
     
     // Aggiorna l'interpretazione della coorte
