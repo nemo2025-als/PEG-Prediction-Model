@@ -342,6 +342,7 @@ function resetCalculator() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// CONTATORE VISITE AVANZATO
 function initVisitCounter() {
     // Registra visita con timestamp
     let visitHistory = JSON.parse(localStorage.getItem('pegCalculatorHistory') || '[]');
@@ -366,6 +367,10 @@ function initVisitCounter() {
         const today = new Date().toDateString();
         const todayVisits = visitHistory.filter(v => new Date(v.timestamp).toDateString() === today).length;
         
+        // Calcola visite per dispositivo
+        const mobileVisits = visitHistory.filter(v => /Mobile|Android|iPhone/i.test(v.userAgent)).length;
+        const desktopVisits = visitHistory.length - mobileVisits;
+        
         const counterDiv = document.createElement('div');
         counterDiv.innerHTML = `
             <div style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.9); 
@@ -375,7 +380,14 @@ function initVisitCounter() {
                 <hr style="margin: 10px 0; opacity: 0.3;">
                 Total Visits: <strong>${visitHistory.length}</strong><br>
                 Today: <strong>${todayVisits}</strong><br>
+                Mobile: <strong>${mobileVisits}</strong> | Desktop: <strong>${desktopVisits}</strong><br>
                 <small style="opacity: 0.7;">Tracking since: ${new Date(visitHistory[0]?.timestamp || Date.now()).toLocaleDateString()}</small>
+                <br><br>
+                <button onclick="localStorage.clear(); location.reload();" 
+                        style="background: #e74c3c; color: white; border: none; padding: 5px 10px; 
+                               border-radius: 5px; cursor: pointer; font-size: 12px;">
+                    Clear Stats
+                </button>
             </div>
         `;
         document.body.appendChild(counterDiv);
