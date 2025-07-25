@@ -56,7 +56,7 @@ const models = {
             { id: "pre_weight", label: "Premorbid Weight, kg", type: "number", min: 0, max: 150 },
             { id: "post_weight", label: "Weight at Evaluation, kg", type: "number", min: 0, max: 150 },
             { id: "onset_date", label: "Date of Disease Onset", type: "date", min: "1900-01-01", max: new Date().toISOString().split("T")[0] },
-            { id: "eval_date", label: "Date of Current Evaluation", type: "date", min: "1900-01-01", max: new Date().toISOString().split("T")[0] }
+            { id: "eval_date", label: "Date of Evaluation", type: "date", min: "1900-01-01", max: new Date().toISOString().split("T")[0] }
         ],
         calculate: (data) => {
             const getMonthDifference = (startDate, endDate) => {
