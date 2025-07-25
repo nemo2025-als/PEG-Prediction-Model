@@ -239,15 +239,15 @@ body {
 
 #prob-description1 {
     font-size: 1.4em;  /* Ridotto per essere più piccolo */
-    margin-bottom: 30px;
-    line-height: 1.2;
+    margin-bottom: 15px;
+    line-height: 1.0;
     color: white;
 }
 
 #prob-description2 {
     font-size: 1.4em;  /* Ridotto per essere più piccolo */
-    margin-bottom: 30px;
-    line-height: 1.2;
+    margin-bottom: 15px;
+    line-height: 1.0;
     color: white;
 }
 
