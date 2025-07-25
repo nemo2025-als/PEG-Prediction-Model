@@ -230,15 +230,8 @@ body {
 }
 
 /* Probability Level Styling */
-#prob-level {
-    font-size: 2.6em;  /* Questo rimane il più grande */
-    font-weight: 700;
-    display: block;
-    margin-bottom: 20px;
-}
-
 #prob-description {
-    font-size: 1.4em;  /* Ridotto per essere più piccolo */
+    font-size: 2em;  /* Ridotto per essere più piccolo */
     margin-bottom: 30px;
     line-height: 1.5;
     color: white;
@@ -310,12 +303,9 @@ body {
 
 /* Responsive per il testo dei risultati */
 @media (max-width: 768px) {
-    #prob-level {
-        font-size: 1.2em;
-    }
     
     #prob-description {
-        font-size: 1.1em;
+        font-size: 1.2em;
     }
     
     .result-interpretation {
@@ -325,9 +315,6 @@ body {
 }
 
 @media (max-width: 480px) {
-    #prob-level {
-        font-size: 1em;
-    }
     
     #prob-description {
         font-size: 1em;
@@ -341,9 +328,6 @@ body {
 
 /* Ottimizzazione specifica per iPhone e dispositivi mobili */
 @media (max-width: 414px) { /* iPhone 6/7/8 Plus */
-    #prob-level {
-        font-size: 1.3em;
-    }
     
     .result-card {
         padding: 30px;
@@ -351,9 +335,6 @@ body {
 }
 
 @media (max-width: 390px) { /* iPhone 12/13/14 Pro */
-    #prob-level {
-        font-size: 1.2em;
-    }
     
     .result-card {
         padding: 25px;
@@ -361,12 +342,9 @@ body {
 }
 
 @media (max-width: 375px) { /* iPhone 6/7/8/SE */
-    #prob-level {
-        font-size: 1.1em;
-    }
     
     #prob-description {
-        font-size: 0.95em;
+        font-size: 1.1em;
     }
     
     .result-interpretation {
@@ -375,19 +353,10 @@ body {
     }
 }
 
-@media (max-width: 360px) { /* Dispositivi Android piccoli */
-    #prob-level {
-        font-size: 1em;
-    }
-}
-
 @media (max-width: 320px) { /* iPhone SE 1st gen */
-    #prob-level {
-        font-size: 0.9em;
-    }
-    
+   
     #prob-description {
-        font-size: 0.85em;
+        font-size: 0.9em;
     }
     
     .result-card {
