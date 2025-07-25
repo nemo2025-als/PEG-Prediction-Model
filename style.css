@@ -147,7 +147,7 @@ body {
     color: #2c3e50;
 }
 
-/* Layout specifico per il modello 3 - 3 colonne per riga */
+/* Layout specifico per il modello 3 - 4 colonne per riga */
 .form-fields.four-columns {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -223,15 +223,9 @@ body {
     margin-bottom: 30px;
 }
 
-.result-value {
-    font-size: 4em;
-    font-weight: 700;
-    margin-bottom: 20px;
-}
-
 /* Probability Level Styling */
 #prob-description {
-    font-size: 2em;  /* Ridotto per essere più piccolo */
+    font-size: 1.3em;  /* Dimensione appropriata per il testo principale */
     margin-bottom: 30px;
     line-height: 1.5;
     color: white;
@@ -303,9 +297,8 @@ body {
 
 /* Responsive per il testo dei risultati */
 @media (max-width: 768px) {
-    
     #prob-description {
-        font-size: 1.2em;
+        font-size: 1.1em;
     }
     
     .result-interpretation {
@@ -315,7 +308,6 @@ body {
 }
 
 @media (max-width: 480px) {
-    
     #prob-description {
         font-size: 1em;
     }
@@ -342,9 +334,8 @@ body {
 }
 
 @media (max-width: 375px) { /* iPhone 6/7/8/SE */
-    
     #prob-description {
-        font-size: 1.1em;
+        font-size: 0.95em;
     }
     
     .result-interpretation {
@@ -354,8 +345,7 @@ body {
 }
 
 @media (max-width: 320px) { /* iPhone SE 1st gen */
-   
-    #prob-description {
+   #prob-description {
         font-size: 0.9em;
     }
     
