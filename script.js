@@ -223,7 +223,8 @@ document.getElementById('prediction-form').addEventListener('submit', function(e
 function showResults(prediction) {
     const resultsSection = document.getElementById('results-section');
     const probLevelElement = document.getElementById('prob-level');
-    const probDescription = document.getElementById('prob-description');
+    const probDescription1 = document.getElementById('prob-description1');
+    const probDescription2 = document.getElementById('prob-description2');
     const interpretation = document.getElementById('result-interpretation');
     
     // Usa il cutoff specifico del modello
@@ -231,14 +232,17 @@ function showResults(prediction) {
     
     // Determina il livello di rischio
     let prob = '';
-    let descriptionText = '';
+    let descriptionText1 = '';
+    let descriptionText2 = '';
     
     if (prediction < cutoff) {
         prob = 'Low';
-        descriptionText = 'The probability of needing a PEG in the next 6 months is low. Continue standard monitoring.';
+        descriptionText1 = 'The probability of needing a PEG in the next 6 months is low.';
+        descriptionText2 = 'Continue standard monitoring.';
     } else {
         prob = 'High';
-        descriptionText = 'The probability of needing a PEG in the next 6 months is high. A specialist assessment is recommended.';
+        descriptionText1 = 'The probability of needing a PEG in the next 6 months is high.';
+        descriptionText2 = 'A specialist assessment is recommended.';
     }
     
     // Aggiorna il livello di rischio con il valore della predizione (TEMPORANEO PER TEST - <br><small style="font-size: 0.5em; opacity: 0.7;">p = ${prediction.toFixed(4)}</small>)
@@ -246,7 +250,8 @@ function showResults(prediction) {
     probLevelElement.style.color = prob === 'High' ? '#e74c3c' : '#27ae60';
     
     // Aggiorna la descrizione del rischio
-    probDescription.textContent = descriptionText;
+    probDescription1.textContent = descriptionText1;
+    probDescription2.textContent = descriptionText2;
     
     // Ottieni i valori predittivi specifici per il modello
     const predictiveValues = modelPredictiveValues[selectedModel];
