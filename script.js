@@ -336,3 +336,38 @@ function resetCalculator() {
     // Scrolla all'inizio
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// Contatore visite (visibile solo con parametro segreto)
+function initVisitCounter() {
+    // Incrementa il contatore ad ogni visita
+    let visits = localStorage.getItem('pegCalculatorVisits') || 0;
+    visits = parseInt(visits) + 1;
+    localStorage.setItem('pegCalculatorVisits', visits);
+    
+    // Mostra il contatore solo se c'è il parametro segreto nell'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const showStats = urlParams.get('stats');
+    
+    if (showStats === 'nemo2025') { // Cambia 'nemo2025' con la tua password segreta
+        const counterDiv = document.createElement('div');
+        counterDiv.id = 'visit-counter';
+        counterDiv.innerHTML = `
+            <div style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.8); 
+                        color: white; padding: 15px; border-radius: 10px; font-size: 14px; 
+                        z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <strong>📊 Stats (Private)</strong><br>
+                Total Visits: ${visits}<br>
+                <small style="opacity: 0.7;">Since: ${new Date(parseInt(localStorage.getItem('pegCalculatorFirstVisit') || Date.now())).toLocaleDateString()}</small>
+            </div>
+        `;
+        document.body.appendChild(counterDiv);
+    }
+    
+    // Registra la prima visita
+    if (!localStorage.getItem('pegCalculatorFirstVisit')) {
+        localStorage.setItem('pegCalculatorFirstVisit', Date.now());
+    }
+}
+
+// Inizializza il contatore quando la pagina è caricata
+document.addEventListener('DOMContentLoaded', initVisitCounter);
