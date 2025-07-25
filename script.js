@@ -411,7 +411,7 @@ function initFirebaseCounter() {
                             <div style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.9); 
                                         color: white; padding: 20px; border-radius: 10px; font-size: 14px; 
                                         z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 300px;">
-                                <strong>📊 Global Stats (Firebase)</strong><br>
+                                <strong>📊 Global Stats</strong><br>
                                 <hr style="margin: 10px 0; opacity: 0.3;">
                                 Total Visits: <strong>${totalVisits}</strong><br>
                                 Today: <strong>${todayVisits}</strong><br>
