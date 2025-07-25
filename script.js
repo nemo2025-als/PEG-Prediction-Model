@@ -310,7 +310,7 @@ else {
     
     // Se abbiamo un valore singolo, costruisci il testo
     if (patientsValue !== null && cohortText === '') {
-        cohortText = `Based on the clinical data provided, <strong>among 100 patients</strong> with the same disease conditions, <br><strong>${patientsValue}</strong> are expected to actually require PEG placement</strong> within 6 months.`;
+        cohortText = `Based on the clinical data provided, <strong>among 100 patients</strong> with the same disease conditions, <br><strong>${patientsValue} are expected to actually require PEG placement</strong> within 6 months.`;
     }
     
     // Aggiorna l'interpretazione della coorte
