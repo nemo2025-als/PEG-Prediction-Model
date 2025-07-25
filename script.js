@@ -264,18 +264,43 @@ function showResults(prediction) {
         patientsValue = predictiveValues[0.6];
     }
     // Altri casi
-    else {
-        const lowerDecile = Math.floor(prediction * 10) / 10;
-        const upperDecile = Math.ceil(prediction * 10) / 10;
-        
-        // Se cade esattamente su un decile o tra decili con stesso valore
-        if (lowerDecile === upperDecile || predictiveValues[lowerDecile] === predictiveValues[upperDecile]) {
-            patientsValue = predictiveValues[lowerDecile];
-        } else {
-            // Mostra range solo se i valori sono diversi
-            const lowerPatients = predictiveValues[lowerDecile];
-            const upperPatients = predictiveValues[upperDecile];
-            cohortText = `Considering a cohort of 100 patients with similar disease conditions, <br><strong>${lowerPatients} - ${upperPatients}</strong> patients will have PEG placement within 6 months.`;
+else {
+    const lowerDecile = Math.floor(prediction * 10) / 10;
+    const upperDecile = Math.ceil(prediction * 10) / 10;
+    
+    // Gestisci i casi speciali per valori molto bassi
+    let actualLower = lowerDecile;
+    let actualUpper = upperDecile;
+    
+    // Se il valore calcolato non esiste nell'array, trova il più vicino
+    if (!(actualLower in predictiveValues)) {
+        // Per valori sotto 0.2, usa 0.0
+        actualLower = 0.0;
+    }
+    
+    if (!(actualUpper in predictiveValues)) {
+        // Trova il decile successivo disponibile
+        const availableDeciles = [0.0, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+        for (let decile of availableDeciles) {
+            if (decile >= upperDecile) {
+                actualUpper = decile;
+                break;
+            }
+        }
+        // Se non trovato, usa 0.2 come fallback
+        if (!(actualUpper in predictiveValues)) {
+            actualUpper = 0.2;
+        }
+    }
+    
+    // Se cade esattamente su un decile o tra decili con stesso valore
+    if (actualLower === actualUpper || predictiveValues[actualLower] === predictiveValues[actualUpper]) {
+        patientsValue = predictiveValues[actualLower];
+    } else {
+        // Mostra range solo se i valori sono diversi
+        const lowerPatients = predictiveValues[actualLower];
+        const upperPatients = predictiveValues[actualUpper];
+        cohortText = `Considering a cohort of 100 patients with similar disease conditions, <br><strong>${lowerPatients} - ${upperPatients}</strong> patients will have PEG placement within 6 months.`;
         }
     }
     
