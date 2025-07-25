@@ -66,26 +66,9 @@
         </section>
     </div>
 
-    <script type="module">
-      // Import the functions you need from the SDKs you need
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-      // TODO: Add SDKs for Firebase products that you want to use
-      // https://firebase.google.com/docs/web/setup#available-libraries
-    
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyBsaPeqQh-QW0BHphiQHjdowiOhBoWNqTc",
-        authDomain: "peg-prediction-model.firebaseapp.com",
-        databaseURL: "https://peg-prediction-model-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "peg-prediction-model",
-        storageBucket: "peg-prediction-model.firebasestorage.app",
-        messagingSenderId: "1068012856221",
-        appId: "1:1068012856221:web:b5ce1daeb40d701d44c574"
-      };
-    
-      // Initialize Firebase
-      const app = initializeApp(firebaseConfig);
-    </script>
+        <!-- Firebase SDK versione compat -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
     <script src="script.js"></script>
 </body>
