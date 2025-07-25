@@ -1,7 +1,3 @@
-Sure! Here's a complete, professional, and clear `README.md` for your GitHub project based on the provided HTML, CSS, and JS files:
-
----
-
 # 🧠 ALS PEG Prediction Model
 
 A web-based tool to predict the probability of **PEG (Percutaneous Endoscopic Gastrostomy) placement within 6 months** in patients with **Amyotrophic Lateral Sclerosis (ALS)**. Developed at the **Centro Clinico NeMO**, this tool supports clinical decision-making through validated logistic regression models based on patient data.
