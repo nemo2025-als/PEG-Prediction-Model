@@ -239,14 +239,14 @@ function showResults(prediction) {
     
     if (prediction < cutoff) {
         prob = 'Low';
-        descriptionText = 'The probability of needing a PEG in the next 6 months is low.<br>Continue standard monitoring.';
+        descriptionText = '<strong>The patient is not expected to require PEG placement</strong> within the next 6 months.<br>Continue standard monitoring.';
     } else {
         prob = 'High';
-        descriptionText = 'The probability of needing a PEG in the next 6 months is high.<br>A specialist assessment is recommended.';
+        descriptionText = '<strong>The patient is expected to require PEG placement</strong> within the next 6 months.<br>A specialist assessment is recommended.';
     }
     
-    // Aggiorna il livello di rischio con il valore della predizione (TEMPORANEO PER TEST - <br><small style="font-size: 0.5em; opacity: 0.7;">p = ${prediction.toFixed(4)}</small>)
-    probLevelElement.innerHTML = `${prob}<br><small style="font-size: 0.5em; opacity: 0.7;">p = ${prediction.toFixed(4)}</small>`;
+    // Aggiorna il livello di rischio con il valore della predizione
+    probLevelElement.innerHTML = `${prob}`;
     probLevelElement.style.color = prob === 'High' ? '#e74c3c' : '#27ae60';
     
     // Aggiorna la descrizione del rischio
@@ -304,13 +304,13 @@ else {
         // Mostra range solo se i valori sono diversi
         const lowerPatients = predictiveValues[actualLower];
         const upperPatients = predictiveValues[actualUpper];
-        cohortText = `Considering a cohort of 100 patients with similar disease conditions, <br><strong>${lowerPatients} - ${upperPatients}</strong> patients will have PEG placement within 6 months.`;
+        cohortText = `Based on the clinical data provided, <strong>among 100 patients</strong> with the same disease conditions, <br><strong>between ${lowerPatients} - ${upperPatients} are expected to actually require PEG placement</strong> within 6 months.`;
         }
     }
     
     // Se abbiamo un valore singolo, costruisci il testo
     if (patientsValue !== null && cohortText === '') {
-        cohortText = `Considering a cohort of 100 patients with similar disease conditions, <br><strong>${patientsValue}</strong> patients will have PEG placement within 6 months.`;
+        cohortText = `Based on the clinical data provided, <strong>among 100 patients</strong> with the same disease conditions, <br><strong>${patientsValue}</strong> are expected to actually require PEG placement</strong> within 6 months.`;
     }
     
     // Aggiorna l'interpretazione della coorte
