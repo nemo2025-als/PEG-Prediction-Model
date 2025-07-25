@@ -344,9 +344,11 @@ function resetCalculator() {
 
 // Contatore visite globale con Firebase
 function initFirebaseCounter() {
+    console.log('Inizializzazione Firebase Counter...');
+    
     // Configurazione Firebase
     const firebaseConfig = {
-         apiKey: "AIzaSyBsaPeqQh-QW0BHphiQHjdowiOhBoWNqTc",
+        apiKey: "AIzaSyBsaPeqQh-QW0BHphiQHjdowiOhBoWNqTc",
         authDomain: "peg-prediction-model.firebaseapp.com",
         databaseURL: "https://peg-prediction-model-default-rtdb.europe-west1.firebasedatabase.app",
         projectId: "peg-prediction-model",
@@ -359,12 +361,19 @@ function initFirebaseCounter() {
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     
-    // Riferimento al contatore
+    // SOLUZIONE: Usa .once() prima di fare la transaction
     const visitsRef = database.ref('visits/total');
     
-    // Incrementa il contatore
-    visitsRef.transaction((currentValue) => {
-        return (currentValue || 0) + 1;
+    visitsRef.once('value').then((snapshot) => {
+        const currentValue = snapshot.val() || 0;
+        console.log('Valore attuale:', currentValue);
+        
+        // Ora aggiorna il valore
+        visitsRef.set(currentValue + 1).then(() => {
+            console.log('Contatore aggiornato a:', currentValue + 1);
+        }).catch((error) => {
+            console.error('Errore aggiornamento contatore:', error);
+        });
     });
     
     // Registra anche data/ora della visita
@@ -378,46 +387,58 @@ function initFirebaseCounter() {
     // Mostra statistiche solo con parametro segreto
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('stats') === 'nemo2025') {
-        // Ottieni il conteggio totale
-        visitsRef.once('value').then((snapshot) => {
-            const totalVisits = snapshot.val() || 0;
-            
-            // Conta le visite di oggi
-            const today = new Date();
-            today.setHours(0,0,0,0);
-            const todayTimestamp = today.getTime();
-            
-            database.ref('visits/log')
-                .orderByChild('timestamp')
-                .startAt(todayTimestamp)
-                .once('value')
-                .then((logSnapshot) => {
-                    const todayVisits = logSnapshot.numChildren();
-                    
-                    // Crea il box delle statistiche
-                    const counterDiv = document.createElement('div');
-                    counterDiv.innerHTML = `
-                        <div style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.9); 
-                                    color: white; padding: 20px; border-radius: 10px; font-size: 14px; 
-                                    z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 300px;">
-                            <strong>📊 Global Stats (Firebase)</strong><br>
-                            <hr style="margin: 10px 0; opacity: 0.3;">
-                            Total Visits: <strong>${totalVisits}</strong><br>
-                            Today: <strong>${todayVisits}</strong><br>
-                            <small style="opacity: 0.7;">Real-time global counter</small>
-                            <br><br>
-                            <a href="https://console.firebase.google.com/project/${firebaseConfig.projectId}/database" 
-                               target="_blank" 
-                               style="color: #3498db; text-decoration: none; font-size: 12px;">
-                                View Full Dashboard →
-                            </a>
-                        </div>
-                    `;
-                    document.body.appendChild(counterDiv);
-                });
-        });
+        // Aspetta un attimo per assicurarsi che il database sia aggiornato
+        setTimeout(() => {
+            // Ottieni il conteggio totale aggiornato
+            visitsRef.once('value').then((snapshot) => {
+                const totalVisits = snapshot.val() || 0;
+                
+                // Conta le visite di oggi
+                const today = new Date();
+                today.setHours(0,0,0,0);
+                const todayTimestamp = today.getTime();
+                
+                database.ref('visits/log')
+                    .orderByChild('timestamp')
+                    .startAt(todayTimestamp)
+                    .once('value')
+                    .then((logSnapshot) => {
+                        const todayVisits = logSnapshot.numChildren();
+                        
+                        // Crea il box delle statistiche
+                        const counterDiv = document.createElement('div');
+                        counterDiv.innerHTML = `
+                            <div style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.9); 
+                                        color: white; padding: 20px; border-radius: 10px; font-size: 14px; 
+                                        z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 300px;">
+                                <strong>📊 Global Stats (Firebase)</strong><br>
+                                <hr style="margin: 10px 0; opacity: 0.3;">
+                                Total Visits: <strong>${totalVisits}</strong><br>
+                                Today: <strong>${todayVisits}</strong><br>
+                                <small style="opacity: 0.7;">Real-time global counter</small>
+                                <br><br>
+                                <button onclick="location.reload();" 
+                                        style="background: #3498db; color: white; border: none; 
+                                               padding: 5px 10px; border-radius: 5px; cursor: pointer; 
+                                               font-size: 12px; margin-right: 5px;">
+                                    🔄 Refresh
+                                </button>
+                                <a href="https://console.firebase.google.com/project/${firebaseConfig.projectId}/database" 
+                                   target="_blank" 
+                                   style="color: #3498db; text-decoration: none; font-size: 12px;">
+                                    View Dashboard →
+                                </a>
+                            </div>
+                        `;
+                        document.body.appendChild(counterDiv);
+                    });
+            });
+        }, 1000); // Aspetta 1 secondo per assicurarsi che il database sia aggiornato
     }
 }
+
+// Inizializza il contatore Firebase quando la pagina è caricata
+document.addEventListener('DOMContentLoaded', initFirebaseCounter);
 
 // Inizializza il contatore Firebase quando la pagina è caricata
 document.addEventListener('DOMContentLoaded', initFirebaseCounter);
