@@ -342,35 +342,32 @@ function resetCalculator() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Contatore visite globale con CountAPI
-function initGlobalCounter() {
-    const namespace = 'nemo2025-als.github.io';
-    const key = 'peg-calculator-visits';
+// Alternativa: Goatcounter
+function initGoatCounter() {
+    // Aggiungi lo script di Goatcounter
+    const script = document.createElement('script');
+    script.src = 'https://gc.zgo.at/count.js';
+    script.setAttribute('data-goatcounter', 'https://nemo2025-als.goatcounter.com/count');
+    script.async = true;
+    document.head.appendChild(script);
     
-    // Incrementa il contatore
-    fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
-        .then(response => response.json())
-        .then(data => {
-            // Mostra il contatore solo con parametro segreto
-            const urlParams = new URLSearchParams(window.location.search);
-            const showStats = urlParams.get('stats');
-            
-            if (showStats === 'nemo2025') {
-                const counterDiv = document.createElement('div');
-                counterDiv.innerHTML = `
-                    <div style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.9); 
-                                color: white; padding: 20px; border-radius: 10px; font-size: 14px; 
-                                z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                        <strong>📊 Global Stats</strong><br>
-                        <hr style="margin: 10px 0; opacity: 0.3;">
-                        Total Global Visits: <strong>${data.value}</strong><br>
-                        <small style="opacity: 0.7;">All users worldwide</small>
-                    </div>
-                `;
-                document.body.appendChild(counterDiv);
-            }
-        })
-        .catch(error => console.error('Error fetching counter:', error));
+    // Mostra stats private (dovrai accedere al dashboard Goatcounter)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('stats') === 'nemo2025') {
+        const counterDiv = document.createElement('div');
+        counterDiv.innerHTML = `
+            <div style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.9); 
+                        color: white; padding: 20px; border-radius: 10px; font-size: 14px; 
+                        z-index: 9999;">
+                <strong>📊 Stats Dashboard</strong><br>
+                <hr style="margin: 10px 0; opacity: 0.3;">
+                Visit: <a href="https://nemo2025-als.goatcounter.com" target="_blank" style="color: #3498db;">
+                    GoatCounter Dashboard
+                </a>
+            </div>
+        `;
+        document.body.appendChild(counterDiv);
+    }
 }
 
 // Sostituisci la chiamata a initVisitCounter con questa
