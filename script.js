@@ -371,4 +371,4 @@ function initGoatCounter() {
 }
 
 // Sostituisci la chiamata a initVisitCounter con questa
-document.addEventListener('DOMContentLoaded', initGlobalCounter);
+document.addEventListener('DOMContentLoaded', initGoatCounter);
