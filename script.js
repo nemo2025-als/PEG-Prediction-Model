@@ -342,35 +342,43 @@ function resetCalculator() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Contatore visite (visibile solo con parametro segreto)
 function initVisitCounter() {
-    // Incrementa il contatore ad ogni visita
-    let visits = localStorage.getItem('pegCalculatorVisits') || 0;
-    visits = parseInt(visits) + 1;
-    localStorage.setItem('pegCalculatorVisits', visits);
+    // Registra visita con timestamp
+    let visitHistory = JSON.parse(localStorage.getItem('pegCalculatorHistory') || '[]');
+    visitHistory.push({
+        timestamp: Date.now(),
+        userAgent: navigator.userAgent,
+        referrer: document.referrer || 'Direct'
+    });
     
-    // Mostra il contatore solo se c'è il parametro segreto nell'URL
+    // Mantieni solo le ultime 1000 visite per non riempire localStorage
+    if (visitHistory.length > 1000) {
+        visitHistory = visitHistory.slice(-1000);
+    }
+    
+    localStorage.setItem('pegCalculatorHistory', JSON.stringify(visitHistory));
+    
+    // Mostra statistiche se richiesto
     const urlParams = new URLSearchParams(window.location.search);
     const showStats = urlParams.get('stats');
     
-    if (showStats === 'nemo2025') { // Cambia 'nemo2025' con la tua password segreta
+    if (showStats === 'nemo2025') {
+        const today = new Date().toDateString();
+        const todayVisits = visitHistory.filter(v => new Date(v.timestamp).toDateString() === today).length;
+        
         const counterDiv = document.createElement('div');
-        counterDiv.id = 'visit-counter';
         counterDiv.innerHTML = `
-            <div style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.8); 
-                        color: white; padding: 15px; border-radius: 10px; font-size: 14px; 
-                        z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                <strong>📊 Stats (Private)</strong><br>
-                Total Visits: ${visits}<br>
-                <small style="opacity: 0.7;">Since: ${new Date(parseInt(localStorage.getItem('pegCalculatorFirstVisit') || Date.now())).toLocaleDateString()}</small>
+            <div style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.9); 
+                        color: white; padding: 20px; border-radius: 10px; font-size: 14px; 
+                        z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 300px;">
+                <strong>📊 Private Analytics</strong><br>
+                <hr style="margin: 10px 0; opacity: 0.3;">
+                Total Visits: <strong>${visitHistory.length}</strong><br>
+                Today: <strong>${todayVisits}</strong><br>
+                <small style="opacity: 0.7;">Tracking since: ${new Date(visitHistory[0]?.timestamp || Date.now()).toLocaleDateString()}</small>
             </div>
         `;
         document.body.appendChild(counterDiv);
-    }
-    
-    // Registra la prima visita
-    if (!localStorage.getItem('pegCalculatorFirstVisit')) {
-        localStorage.setItem('pegCalculatorFirstVisit', Date.now());
     }
 }
 
