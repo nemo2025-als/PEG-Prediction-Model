@@ -223,7 +223,7 @@ document.getElementById('prediction-form').addEventListener('submit', function(e
 function showResults(prediction) {
     const resultsSection = document.getElementById('results-section');
     const probLevelElement = document.getElementById('prob-level');
-    const probDescription = document.getElementById('prob-description');
+    const probDescription = document.getElementById('prob-description').innerHTML;
     const interpretation = document.getElementById('result-interpretation');
     
     // Usa il cutoff specifico del modello
